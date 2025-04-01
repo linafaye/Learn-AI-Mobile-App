@@ -136,7 +136,8 @@
   }
 
   .mobile-scrollable {
-    @apply overflow-y-auto overscroll-behavior-y-contain;
+    @apply overflow-y-auto;
+    overscroll-behavior-y: contain;
     -webkit-overflow-scrolling: touch;
   }
 }
