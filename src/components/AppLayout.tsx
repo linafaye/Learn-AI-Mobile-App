@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import MobileNavBar from "./MobileNavBar";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -58,9 +59,9 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, showNav = true }) => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex flex-col h-screen overflow-hidden">
       {/* Mobile header */}
-      <header className="md:hidden sticky top-0 z-50 bg-background border-b px-4 h-14 flex items-center justify-between">
+      <header className="md:hidden sticky top-0 z-40 bg-background border-b px-4 h-14 flex items-center justify-between">
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
           <SheetTrigger asChild>
             <Button variant="ghost" size="icon">
@@ -110,7 +111,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, showNav = true }) => {
         </div>
       </header>
       
-      <div className="flex flex-1">
+      <div className="flex flex-1 overflow-hidden">
         {/* Desktop sidebar */}
         <aside className="hidden md:flex border-r w-64 p-4 flex-col h-screen sticky top-0">
           <div className="flex items-center gap-2 mb-8">
@@ -164,10 +165,13 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, showNav = true }) => {
           </div>
         </aside>
         
-        <main className="flex-1">
+        <main className="flex-1 overflow-y-auto pb-16 md:pb-0 mobile-scrollable">
           {children}
         </main>
       </div>
+      
+      {/* Mobile bottom navigation */}
+      <MobileNavBar />
     </div>
   );
 };
