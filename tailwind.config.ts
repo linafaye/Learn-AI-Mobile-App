@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,31 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Custom colors for our AI learning app
+				aiblue: {
+					50: '#E6F4FF',
+					100: '#BDDEFF',
+					200: '#94C8FF',
+					300: '#6BB2FF',
+					400: '#429CFF',
+					500: '#1A86FF',
+					600: '#0070E0',
+					700: '#005AB3',
+					800: '#004486',
+					900: '#002E59',
+				},
+				aiteal: {
+					50: '#E6FFFD',
+					100: '#B3FFF9',
+					200: '#80FFF6',
+					300: '#4DFFEE',
+					400: '#1AFFE6',
+					500: '#00E6D9',
+					600: '#00B3A6',
+					700: '#008073',
+					800: '#004D40',
+					900: '#001A1A',
 				}
 			},
 			borderRadius: {
@@ -84,11 +110,16 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'pulse-slow': {
+					'0%, 100%': { opacity: '1' },
+					'50%': { opacity: '0.8' },
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'pulse-slow': 'pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
 			}
 		}
 	},
