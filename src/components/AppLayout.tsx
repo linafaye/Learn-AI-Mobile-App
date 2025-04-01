@@ -27,7 +27,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, showNav = true }) => {
   const [sheetOpen, setSheetOpen] = React.useState(false);
 
   if (!showNav) {
-    return <main className="min-h-screen">{children}</main>;
+    return <main className="min-h-screen overflow-auto">{children}</main>;
   }
 
   const navigation = [
@@ -59,7 +59,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, showNav = true }) => {
   };
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden">
+    <div className="flex flex-col h-screen">
       {/* Mobile header */}
       <header className="md:hidden sticky top-0 z-40 bg-background border-b px-4 h-14 flex items-center justify-between">
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
@@ -111,7 +111,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, showNav = true }) => {
         </div>
       </header>
       
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-auto">
         {/* Desktop sidebar */}
         <aside className="hidden md:flex border-r w-64 p-4 flex-col h-screen sticky top-0">
           <div className="flex items-center gap-2 mb-8">
@@ -165,7 +165,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, showNav = true }) => {
           </div>
         </aside>
         
-        <main className="flex-1 overflow-y-auto pb-16 md:pb-0 mobile-scrollable">
+        <main className="flex-1 overflow-auto pb-16 md:pb-0 mobile-scrollable">
           {children}
         </main>
       </div>
