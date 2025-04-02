@@ -81,7 +81,7 @@ const CourseFilters: React.FC<CourseFiltersProps> = ({
       </div>
       
       <Tabs defaultValue={activeCategory} className="mb-8">
-        <TabsList>
+        <TabsList className="w-full flex flex-wrap h-auto py-1">
           <TabsTrigger value="all" onClick={() => filterByCategory("all")}>All</TabsTrigger>
           <TabsTrigger value="fundamentals" onClick={() => filterByCategory("fundamentals")}>Fundamentals</TabsTrigger>
           <TabsTrigger value="machine learning" onClick={() => filterByCategory("machine learning")}>Machine Learning</TabsTrigger>

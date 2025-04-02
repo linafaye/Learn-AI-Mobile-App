@@ -6,7 +6,7 @@ import {
   LearningExperience 
 } from "@/contexts/AuthContext";
 
-export type ContentFormat = "audio" | "interactive" | "text";
+export type ContentFormat = "audio" | "text" | "interactive" | "video";
 export type LearningLevel = "beginner" | "intermediate" | "advanced";
 
 export interface LearningPath {
