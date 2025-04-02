@@ -3,6 +3,7 @@ import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Trophy } from "lucide-react";
+import ShareToSocialMedia from "../ShareToSocialMedia";
 
 interface LevelData {
   name: string;
@@ -44,8 +45,15 @@ const UserProgressStats: React.FC<UserProgressStatsProps> = ({
             <p className="text-lg font-semibold">{currentLevel?.name}</p>
             <p className="text-sm text-muted-foreground">{points} points</p>
           </div>
-          <div className="bg-primary text-primary-foreground h-12 w-12 rounded-full flex items-center justify-center text-lg font-bold">
-            {levels.indexOf(currentLevel as any) + 1}
+          <div className="flex items-center gap-2">
+            <ShareToSocialMedia 
+              courseTitle={`${currentLevel?.name} level`}
+              className="bg-transparent border-0 hover:bg-primary/10 h-8 w-8 p-0"
+              customMessage={`I've reached the ${currentLevel?.name} level on PocketLearn with ${points} points! #learning #achievement`}
+            />
+            <div className="bg-primary text-primary-foreground h-12 w-12 rounded-full flex items-center justify-center text-lg font-bold">
+              {levels.indexOf(currentLevel as any) + 1}
+            </div>
           </div>
         </div>
         

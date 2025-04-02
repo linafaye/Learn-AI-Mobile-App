@@ -19,7 +19,10 @@ const CourseActionButton: React.FC<CourseActionButtonProps> = ({
           <CheckCircle className="h-4 w-4 mr-1" />
           Completed
         </Button>
-        <ShareToSocialMedia courseTitle={courseTitle} />
+        <ShareToSocialMedia 
+          courseTitle={courseTitle}
+          customMessage={`I just completed the "${courseTitle}" course on PocketLearn! #learning #ai #education`}
+        />
       </div>
     );
   }

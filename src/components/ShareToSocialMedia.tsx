@@ -13,14 +13,17 @@ import { useToast } from "@/hooks/use-toast";
 interface ShareToSocialMediaProps {
   courseTitle: string;
   className?: string;
+  customMessage?: string;
 }
 
 const ShareToSocialMedia: React.FC<ShareToSocialMediaProps> = ({
   courseTitle,
-  className
+  className,
+  customMessage
 }) => {
   const { toast } = useToast();
-  const shareableText = `I just completed the "${courseTitle}" course on PocketLearn! #learning #ai #education`;
+  const shareableText = customMessage || 
+    `I just completed the "${courseTitle}" course on PocketLearn! #learning #ai #education`;
   const currentUrl = window.location.href;
 
   const handleShare = (platform: string) => {
@@ -74,7 +77,7 @@ const ShareToSocialMedia: React.FC<ShareToSocialMediaProps> = ({
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="sm" className={className}>
           <Share2 className="h-4 w-4 mr-1" />
-          Share
+          {!className?.includes("p-0") && "Share"}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

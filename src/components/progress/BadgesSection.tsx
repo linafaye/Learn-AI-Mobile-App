@@ -3,6 +3,7 @@ import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Award } from "lucide-react";
 import { LucideIcon } from "lucide-react";
+import ShareToSocialMedia from "../ShareToSocialMedia";
 
 interface Badge {
   name: string;
@@ -45,6 +46,15 @@ const BadgesSection: React.FC<BadgesSectionProps> = ({ badges }) => {
               </div>
               <p className="text-sm font-medium text-center">{badge.name}</p>
               <p className="text-xs text-center mt-1">{badge.description}</p>
+              
+              {badge.achieved && (
+                <div className="mt-3">
+                  <ShareToSocialMedia 
+                    courseTitle={`"${badge.name}" badge`} 
+                    className="bg-transparent hover:bg-primary/10 h-8 w-8 p-0"
+                  />
+                </div>
+              )}
             </div>
           ))}
         </div>
