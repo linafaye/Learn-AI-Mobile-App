@@ -1,5 +1,5 @@
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { LearningCourse } from "@/utils/learningPathUtils";
 import RecommendedCourseCard from "./RecommendedCourseCard";
