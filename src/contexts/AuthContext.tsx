@@ -1,42 +1,25 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 
-export type CustomerRole = 
-  | "developer" 
-  | "administrator" 
-  | "data_analyst" 
-  | "student" 
-  | "solution_architect" 
-  | "it" 
-  | "data_engineer" 
-  | "security_engineer" 
-  | "ai_engineer";
-
+export type CustomerRole = "developer" | "administrator" | "data_analyst" | "student" | "solution_architect" | "it" | "data_engineer" | "security_engineer" | "ai_engineer";
 export type LearningGoal = "casual" | "professional" | "skill";
-
+export type WeeklyFrequency = "once" | "twice" | "thrice" | "weekday" | "weekend" | "daily";
+export type LearningExperience = "voice" | "interactive" | "both";
 export type TargetTime = 5 | 10 | 15;
 
-export type WeeklyFrequency = 
-  | "once" 
-  | "twice" 
-  | "thrice" 
-  | "weekday" 
-  | "weekend" 
-  | "daily";
-
-export type LearningExperience = "voice" | "interactive" | "both";
+export interface UserPreferences {
+  customerRole?: CustomerRole;
+  learningGoal?: LearningGoal;
+  weeklyFrequency?: WeeklyFrequency;
+  learningExperience?: LearningExperience;
+  targetTime?: TargetTime;
+}
 
 export type User = {
   id: string;
   email: string;
   name: string;
-  preferences?: {
-    customerRole?: CustomerRole;
-    learningGoal?: LearningGoal;
-    targetTime?: TargetTime;
-    weeklyFrequency?: WeeklyFrequency;
-    learningExperience?: LearningExperience;
-  };
+  preferences?: UserPreferences;
 };
 
 interface AuthContextType {
