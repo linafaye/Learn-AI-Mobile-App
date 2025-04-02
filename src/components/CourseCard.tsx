@@ -1,25 +1,18 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { 
   Headphones,
-  MousePointer,
-  PlayCircle,
-  CheckCircle,
-  BookOpen,
-  PauseCircle,
-  Info,
-  Clock,
-  Volume2,
-  Bookmark,
-  BookmarkCheck
+  MousePointer
 } from "lucide-react";
 import { LearningCourse } from "@/utils/learningPathUtils";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useAuth } from "@/contexts/AuthContext";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import CourseMetadata from "./CourseMetadata";
+import CourseProgress from "./CourseProgress";
+import CourseActionButton from "./CourseActionButton";
+import CourseAudioControls from "./CourseAudioControls";
+import CourseAudioDialog from "./CourseAudioDialog";
+import CourseBookmarkButton from "./CourseBookmarkButton";
 
 interface CourseCardProps {
   course: LearningCourse;
@@ -96,26 +89,10 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
                   {course.level}
                 </span>
               </div>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-6 w-6"
-                      onClick={handleQueueToggle}
-                    >
-                      {inQueue ? 
-                        <BookmarkCheck className="h-4 w-4 text-primary" /> : 
-                        <Bookmark className="h-4 w-4" />
-                      }
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    {inQueue ? "Remove from queue" : "Add to queue"}
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <CourseBookmarkButton 
+                inQueue={inQueue}
+                onToggle={handleQueueToggle}
+              />
             </div>
           </div>
           
@@ -123,115 +100,41 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
             {course.description}
           </p>
           
-          <div className="flex items-center text-sm text-muted-foreground mb-4">
-            <Clock className="h-4 w-4 mr-1" />
-            <span>{course.duration} min</span>
-            <span className="mx-2">•</span>
-            <FormatIcon className="h-4 w-4 mr-1" />
-            <span className="capitalize">{course.format}</span>
-          </div>
+          <CourseMetadata 
+            duration={course.duration} 
+            format={course.format}
+            FormatIcon={FormatIcon}
+          />
           
-          {course.progress !== undefined && course.progress > 0 && (
-            <div className="mb-4 space-y-1">
-              <div className="flex justify-between text-xs">
-                <span>Progress</span>
-                <span>{course.progress}%</span>
-              </div>
-              <Progress value={course.progress} className="h-1.5" />
-            </div>
-          )}
+          <CourseProgress value={course.progress} />
           
           <div className="mt-auto">
             {course.format === "audio" && (course.audioUrl || course.audioContent) ? (
               <div className="flex gap-2">
-                {course.audioUrl && (
-                  <Button 
-                    variant="outline" 
-                    size="icon" 
-                    onClick={handleAudioToggle}
-                    className="flex-shrink-0"
-                  >
-                    {isPlaying ? (
-                      <PauseCircle className="h-4 w-4" />
-                    ) : (
-                      <Volume2 className="h-4 w-4" />
-                    )}
-                  </Button>
-                )}
+                <CourseAudioControls 
+                  isPlaying={isPlaying}
+                  audioUrl={course.audioUrl}
+                  audioContent={course.audioContent}
+                  onAudioToggle={handleAudioToggle}
+                  onViewContent={handleAudioContentView}
+                />
                 
-                {course.audioContent && (
-                  <Button 
-                    variant="outline" 
-                    size="icon" 
-                    onClick={handleAudioContentView}
-                    className="flex-shrink-0"
-                  >
-                    <Info className="h-4 w-4" />
-                  </Button>
-                )}
-                
-                <Button 
-                  className="w-full" 
-                  variant={course.progress !== undefined && course.progress > 0 ? "default" : "outline"}
-                >
-                  {course.progress !== undefined && course.progress > 0 ? (
-                    <>
-                      <PlayCircle className="mr-2 h-4 w-4" />
-                      Continue
-                    </>
-                  ) : course.progress === 100 ? (
-                    <>
-                      <CheckCircle className="mr-2 h-4 w-4" />
-                      Completed
-                    </>
-                  ) : (
-                    <>
-                      <BookOpen className="mr-2 h-4 w-4" />
-                      Start Learning
-                    </>
-                  )}
-                </Button>
+                <CourseActionButton progress={course.progress} />
               </div>
             ) : (
-              <Button 
-                className="w-full" 
-                variant={course.progress !== undefined && course.progress > 0 ? "default" : "outline"}
-              >
-                {course.progress !== undefined && course.progress > 0 ? (
-                  <>
-                    <PlayCircle className="mr-2 h-4 w-4" />
-                    Continue
-                  </>
-                ) : course.progress === 100 ? (
-                  <>
-                    <CheckCircle className="mr-2 h-4 w-4" />
-                    Completed
-                  </>
-                ) : (
-                  <>
-                    <BookOpen className="mr-2 h-4 w-4" />
-                    Start Learning
-                  </>
-                )}
-              </Button>
+              <CourseActionButton progress={course.progress} />
             )}
           </div>
         </div>
       </Card>
       
-      <Dialog open={showAudioContent} onOpenChange={setShowAudioContent}>
-        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>{course.title}</DialogTitle>
-            <DialogDescription>
-              {course.duration} minute audio content
-            </DialogDescription>
-          </DialogHeader>
-          <div className="mt-4 whitespace-pre-line text-sm">
-            {course.audioContent}
-          </div>
-        </DialogContent>
-      </Dialog>
+      <CourseAudioDialog
+        title={course.title}
+        duration={course.duration}
+        content={course.audioContent}
+        open={showAudioContent}
+        onOpenChange={setShowAudioContent}
+      />
     </>
   );
 };
