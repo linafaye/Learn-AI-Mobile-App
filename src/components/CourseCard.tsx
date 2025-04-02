@@ -125,10 +125,10 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
                   onViewContent={handleAudioContentView}
                 />
                 
-                <CourseActionButton progress={course.progress || 0} />
+                <CourseActionButton progress={course.progress || 0} courseTitle={course.title} />
               </div>
             ) : (
-              <CourseActionButton progress={course.progress || 0} />
+              <CourseActionButton progress={course.progress || 0} courseTitle={course.title} />
             )}
           </div>
         </div>

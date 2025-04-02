@@ -1,37 +1,42 @@
 
 import { Button } from "@/components/ui/button";
-import { PlayCircle, CheckCircle, BookOpen } from "lucide-react";
+import { Play, CheckCircle } from "lucide-react";
+import ShareToSocialMedia from "./ShareToSocialMedia";
 
 interface CourseActionButtonProps {
-  progress?: number;
-  className?: string;
+  progress: number;
+  courseTitle?: string;
 }
 
 const CourseActionButton: React.FC<CourseActionButtonProps> = ({ 
   progress,
-  className = "w-full" 
+  courseTitle = "Course"
 }) => {
-  return (
-    <Button 
-      className={className} 
-      variant={progress !== undefined && progress > 0 ? "default" : "outline"}
-    >
-      {progress !== undefined && progress > 0 ? (
-        <>
-          <PlayCircle className="mr-2 h-4 w-4" />
-          Continue
-        </>
-      ) : progress === 100 ? (
-        <>
-          <CheckCircle className="mr-2 h-4 w-4" />
+  if (progress === 100) {
+    return (
+      <div className="flex gap-2 items-center">
+        <Button variant="outline" size="sm" className="bg-green-50 text-green-600 border-green-200 hover:bg-green-100 hover:text-green-700" disabled>
+          <CheckCircle className="h-4 w-4 mr-1" />
           Completed
-        </>
-      ) : (
-        <>
-          <BookOpen className="mr-2 h-4 w-4" />
-          Start Learning
-        </>
-      )}
+        </Button>
+        <ShareToSocialMedia courseTitle={courseTitle} />
+      </div>
+    );
+  }
+  
+  if (progress > 0) {
+    return (
+      <Button>
+        <Play className="h-4 w-4 mr-1" />
+        Continue
+      </Button>
+    );
+  }
+  
+  return (
+    <Button>
+      <Play className="h-4 w-4 mr-1" />
+      Start
     </Button>
   );
 };

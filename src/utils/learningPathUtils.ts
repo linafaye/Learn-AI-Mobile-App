@@ -349,7 +349,7 @@ export const getRecommendedPath = (user: User | null): LearningPath | null => {
         preferredFormats = ["interactive"];
         break;
       case "both":
-        preferredFormats = ["audio", "interactive", "video"];
+        preferredFormats = ["audio", "interactive", "text"];
         break;
     }
     
@@ -417,10 +417,10 @@ export const getRecommendedCourses = (user: User | null, limit: number = 3): Lea
         preferredFormats = ["audio"];
         break;
       case "interactive":
-        preferredFormats = ["interactive", "video"];
+        preferredFormats = ["interactive", "text"];
         break;
       case "both":
-        preferredFormats = ["audio", "interactive", "video"];
+        preferredFormats = ["audio", "interactive", "text"];
         break;
     }
     

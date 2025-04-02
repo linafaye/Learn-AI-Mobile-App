@@ -31,6 +31,8 @@ const learningExperienceOptions = [
   { value: "both", label: "Both formats" },
 ];
 
+type TargetTime = 5 | 10 | 15 | 20;
+
 const Profile = () => {
   const { user, updateUserPreferences } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
@@ -39,7 +41,7 @@ const Profile = () => {
   const [learningGoal, setLearningGoal] = useState<"casual" | "professional" | "skill" | undefined>(
     user?.preferences?.learningGoal
   );
-  const [targetTime, setTargetTime] = useState<5 | 10 | 15 | undefined>(
+  const [targetTime, setTargetTime] = useState<TargetTime | undefined>(
     user?.preferences?.targetTime
   );
   const [learningExperience, setLearningExperience] = useState<"voice" | "interactive" | "both" | undefined>(
@@ -200,6 +202,10 @@ const Profile = () => {
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="15" id="time-15" />
                       <Label htmlFor="time-15">15 minutes</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="20" id="time-20" />
+                      <Label htmlFor="time-20">20 minutes</Label>
                     </div>
                   </div>
                 </RadioGroup>
