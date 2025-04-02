@@ -1,4 +1,10 @@
-import type { User } from "@/contexts/AuthContext";
+import { 
+  User, 
+  CustomerRole, 
+  LearningGoal, 
+  WeeklyFrequency, 
+  LearningExperience 
+} from "@/contexts/AuthContext";
 
 export type ContentFormat = "audio" | "interactive" | "text";
 export type LearningLevel = "beginner" | "intermediate" | "advanced";
@@ -158,23 +164,63 @@ const predefinedPaths: LearningPath[] = [
 export const getRecommendedPath = (user: User | null): LearningPath | null => {
   if (!user?.preferences) return null;
   
-  const { learningGoal, learningExperience } = user.preferences;
+  const { learningGoal, learningExperience, customerRole } = user.preferences;
   
   let recommendedPathId = "";
   
-  // Determine path based on learning goal
-  switch (learningGoal) {
-    case "casual":
-      recommendedPathId = "ai-fundamentals";
-      break;
-    case "professional":
-      recommendedPathId = "ai-specialist";
-      break;
-    case "skill":
-      recommendedPathId = "ml-specialist";
-      break;
-    default:
-      recommendedPathId = "ai-fundamentals";
+  // Determine path based on role and learning goal
+  if (customerRole) {
+    switch (customerRole) {
+      case "developer":
+      case "ai_engineer":
+        recommendedPathId = "ml-specialist";
+        break;
+      case "data_analyst":
+      case "data_engineer":
+        recommendedPathId = "ai-specialist";
+        break;
+      case "administrator":
+      case "it":
+      case "security_engineer":
+        recommendedPathId = "business-ai";
+        break;
+      case "solution_architect":
+        recommendedPathId = learningGoal === "professional" ? "ai-specialist" : "ai-fundamentals";
+        break;
+      case "student":
+        recommendedPathId = "ai-fundamentals";
+        break;
+      default:
+        // Fall back to learning goal if role doesn't have a specific mapping
+        switch (learningGoal) {
+          case "casual":
+            recommendedPathId = "ai-fundamentals";
+            break;
+          case "professional":
+            recommendedPathId = "ai-specialist";
+            break;
+          case "skill":
+            recommendedPathId = "ml-specialist";
+            break;
+          default:
+            recommendedPathId = "ai-fundamentals";
+        }
+    }
+  } else {
+    // Determine path based on learning goal if no role is specified
+    switch (learningGoal) {
+      case "casual":
+        recommendedPathId = "ai-fundamentals";
+        break;
+      case "professional":
+        recommendedPathId = "ai-specialist";
+        break;
+      case "skill":
+        recommendedPathId = "ml-specialist";
+        break;
+      default:
+        recommendedPathId = "ai-fundamentals";
+    }
   }
   
   // Find the base path
@@ -183,18 +229,30 @@ export const getRecommendedPath = (user: User | null): LearningPath | null => {
   
   // Filter courses based on learning experience preference if specified
   if (learningExperience) {
-    const preferredFormat: ContentFormat = learningExperience === "voice" ? "audio" : "interactive";
-    
     // Create a copy of the path
     const customizedPath = {
       ...recommendedPath,
       courses: [...recommendedPath.courses]
     };
     
-    // Prioritize courses with the preferred format, but keep at least one course of each format
+    // Map the UI preference to content format(s)
+    let preferredFormats: ContentFormat[] = [];
+    switch (learningExperience) {
+      case "voice":
+        preferredFormats = ["audio"];
+        break;
+      case "interactive":
+        preferredFormats = ["interactive"];
+        break;
+      case "both":
+        preferredFormats = ["audio", "interactive"];
+        break;
+    }
+    
+    // Prioritize courses with the preferred format(s), but keep at least one course of each format
     // to provide a balanced experience
     const preferredCourses = allCourses.filter(course => 
-      course.format === preferredFormat && 
+      preferredFormats.includes(course.format) && 
       !customizedPath.courses.some(c => c.id === course.id)
     );
     
@@ -223,17 +281,61 @@ export const getRecommendedPath = (user: User | null): LearningPath | null => {
 export const getRecommendedCourses = (user: User | null, limit: number = 3): LearningCourse[] => {
   if (!user?.preferences) return allCourses.slice(0, limit);
   
-  const { learningExperience } = user.preferences;
+  const { learningExperience, customerRole, targetTime } = user.preferences;
   let filteredCourses = [...allCourses];
+  
+  // Filter by role if available
+  if (customerRole) {
+    // Prioritize courses that match the user's role
+    switch (customerRole) {
+      case "developer":
+      case "ai_engineer":
+        filteredCourses.sort((a, b) => {
+          const aTags = ["code", "machine learning", "neural networks"];
+          const bTags = ["code", "machine learning", "neural networks"];
+          return aTags.includes(a.category.toLowerCase()) && !bTags.includes(b.category.toLowerCase()) ? -1 : 1;
+        });
+        break;
+      case "data_analyst":
+      case "data_engineer":
+        filteredCourses.sort((a, b) => {
+          const aTags = ["data", "nlp", "machine learning"];
+          const bTags = ["data", "nlp", "machine learning"];
+          return aTags.includes(a.category.toLowerCase()) && !bTags.includes(b.category.toLowerCase()) ? -1 : 1;
+        });
+        break;
+      // Add more role-based sorting logic as needed
+    }
+  }
+  
+  // If user has a time preference, prioritize courses that match
+  if (targetTime) {
+    filteredCourses.sort((a, b) => {
+      const aTimeDiff = Math.abs(a.duration - targetTime);
+      const bTimeDiff = Math.abs(b.duration - targetTime);
+      return aTimeDiff - bTimeDiff;
+    });
+  }
   
   // If user has a format preference, prioritize those courses
   if (learningExperience) {
-    const preferredFormat: ContentFormat = learningExperience === "voice" ? "audio" : "interactive";
+    let preferredFormats: ContentFormat[] = [];
+    switch (learningExperience) {
+      case "voice":
+        preferredFormats = ["audio"];
+        break;
+      case "interactive":
+        preferredFormats = ["interactive"];
+        break;
+      case "both":
+        preferredFormats = ["audio", "interactive"];
+        break;
+    }
     
     // Sort courses so preferred format appears first
     filteredCourses.sort((a, b) => {
-      if (a.format === preferredFormat && b.format !== preferredFormat) return -1;
-      if (a.format !== preferredFormat && b.format === preferredFormat) return 1;
+      if (preferredFormats.includes(a.format) && !preferredFormats.includes(b.format)) return -1;
+      if (!preferredFormats.includes(a.format) && preferredFormats.includes(b.format)) return 1;
       return 0;
     });
   }

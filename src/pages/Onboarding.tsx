@@ -1,9 +1,8 @@
 
 import { useState, useEffect } from "react";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth, CustomerRole, LearningGoal, TargetTime, WeeklyFrequency, LearningExperience } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { ArrowRight, Check, Loader2 } from "lucide-react";
@@ -17,19 +16,25 @@ const Onboarding = () => {
   const [isLoading, setIsLoading] = useState(false);
   
   // Get from user if available
-  const [learningGoal, setLearningGoal] = useState<"casual" | "professional" | "skill" | undefined>(
+  const [customerRole, setCustomerRole] = useState<CustomerRole | undefined>(
+    user?.preferences?.customerRole
+  );
+  const [learningGoal, setLearningGoal] = useState<LearningGoal | undefined>(
     user?.preferences?.learningGoal
   );
-  const [targetTime, setTargetTime] = useState<5 | 10 | 15 | undefined>(
+  const [targetTime, setTargetTime] = useState<TargetTime | undefined>(
     user?.preferences?.targetTime
   );
-  const [learningExperience, setLearningExperience] = useState<"voice" | "interactive" | undefined>(
+  const [weeklyFrequency, setWeeklyFrequency] = useState<WeeklyFrequency | undefined>(
+    user?.preferences?.weeklyFrequency
+  );
+  const [learningExperience, setLearningExperience] = useState<LearningExperience | undefined>(
     user?.preferences?.learningExperience
   );
 
   // Step management
   const [currentStep, setCurrentStep] = useState(1);
-  const totalSteps = 3;
+  const totalSteps = 5;
   const [dialogOpen, setDialogOpen] = useState(false);
 
   // Progress calculation
@@ -58,15 +63,13 @@ const Onboarding = () => {
   };
   
   const handleSubmit = async () => {
-    if (!learningGoal || !targetTime || !learningExperience) {
-      return;
-    }
-    
     try {
       setIsLoading(true);
       await updateUserPreferences({
+        customerRole,
         learningGoal,
         targetTime,
+        weeklyFrequency,
         learningExperience
       });
       navigate("/dashboard");
@@ -80,10 +83,14 @@ const Onboarding = () => {
   const canProceed = () => {
     switch (currentStep) {
       case 1:
-        return !!learningGoal;
+        return !!customerRole;
       case 2:
-        return !!targetTime;
+        return !!learningGoal;
       case 3:
+        return !!targetTime;
+      case 4:
+        return !!weeklyFrequency;
+      case 5:
         return !!learningExperience;
       default:
         return false;
@@ -93,10 +100,14 @@ const Onboarding = () => {
   const getStepTitle = () => {
     switch (currentStep) {
       case 1:
-        return "What's your learning goal?";
+        return "What's your role?";
       case 2:
-        return "How much time do you have for learning?";
+        return "What's your learning goal?";
       case 3:
+        return "How much time do you have for learning?";
+      case 4:
+        return "How often would you like to learn?";
+      case 5:
         return "Preferred learning experience?";
       default:
         return "";
@@ -106,10 +117,14 @@ const Onboarding = () => {
   const getStepDescription = () => {
     switch (currentStep) {
       case 1:
-        return "Choose what best describes your intention for using our app.";
+        return "Select your professional role so we can tailor content to your needs.";
       case 2:
-        return "We'll tailor content to fit your schedule.";
+        return "Choose what best describes your intention for using our app.";
       case 3:
+        return "We'll adjust content length to fit your schedule.";
+      case 4:
+        return "Set a learning frequency that works for you.";
+      case 5:
         return "Choose your preferred way to consume content.";
       default:
         return "";
@@ -143,10 +158,81 @@ const Onboarding = () => {
                 <DialogDescription>{getStepDescription()}</DialogDescription>
               </DialogHeader>
               
-              <div className="py-4">
-                {/* Step 1: Learning Goal */}
+              <div className="py-4 max-h-[60vh] overflow-y-auto">
+                {/* Step 1: Customer Role */}
                 {currentStep === 1 && (
-                  <RadioGroup value={learningGoal} onValueChange={(value) => setLearningGoal(value as any)}>
+                  <RadioGroup value={customerRole} onValueChange={(value) => setCustomerRole(value as CustomerRole)}>
+                    <div className="grid gap-4 mt-2">
+                      <div className="flex items-start space-x-3 p-3 rounded-md transition-colors hover:bg-muted/50">
+                        <RadioGroupItem value="developer" id="role-developer" className="mt-1" />
+                        <div className="space-y-1.5">
+                          <Label htmlFor="role-developer" className="text-base font-medium">Developer</Label>
+                          <p className="text-sm text-muted-foreground">Software development professional</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-3 p-3 rounded-md transition-colors hover:bg-muted/50">
+                        <RadioGroupItem value="administrator" id="role-administrator" className="mt-1" />
+                        <div className="space-y-1.5">
+                          <Label htmlFor="role-administrator" className="text-base font-medium">Administrator</Label>
+                          <p className="text-sm text-muted-foreground">System or platform administrator</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-3 p-3 rounded-md transition-colors hover:bg-muted/50">
+                        <RadioGroupItem value="data_analyst" id="role-data-analyst" className="mt-1" />
+                        <div className="space-y-1.5">
+                          <Label htmlFor="role-data-analyst" className="text-base font-medium">Data Analyst/Scientist</Label>
+                          <p className="text-sm text-muted-foreground">Works with data analysis and interpretation</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-3 p-3 rounded-md transition-colors hover:bg-muted/50">
+                        <RadioGroupItem value="student" id="role-student" className="mt-1" />
+                        <div className="space-y-1.5">
+                          <Label htmlFor="role-student" className="text-base font-medium">Student</Label>
+                          <p className="text-sm text-muted-foreground">Currently pursuing education</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-3 p-3 rounded-md transition-colors hover:bg-muted/50">
+                        <RadioGroupItem value="solution_architect" id="role-solution-architect" className="mt-1" />
+                        <div className="space-y-1.5">
+                          <Label htmlFor="role-solution-architect" className="text-base font-medium">Solution Architect</Label>
+                          <p className="text-sm text-muted-foreground">System and solution design professional</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-3 p-3 rounded-md transition-colors hover:bg-muted/50">
+                        <RadioGroupItem value="it" id="role-it" className="mt-1" />
+                        <div className="space-y-1.5">
+                          <Label htmlFor="role-it" className="text-base font-medium">IT</Label>
+                          <p className="text-sm text-muted-foreground">Information technology professional</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-3 p-3 rounded-md transition-colors hover:bg-muted/50">
+                        <RadioGroupItem value="data_engineer" id="role-data-engineer" className="mt-1" />
+                        <div className="space-y-1.5">
+                          <Label htmlFor="role-data-engineer" className="text-base font-medium">Data Engineer</Label>
+                          <p className="text-sm text-muted-foreground">Builds and maintains data infrastructure</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-3 p-3 rounded-md transition-colors hover:bg-muted/50">
+                        <RadioGroupItem value="security_engineer" id="role-security-engineer" className="mt-1" />
+                        <div className="space-y-1.5">
+                          <Label htmlFor="role-security-engineer" className="text-base font-medium">Security Engineer</Label>
+                          <p className="text-sm text-muted-foreground">Cybersecurity and information security professional</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-3 p-3 rounded-md transition-colors hover:bg-muted/50">
+                        <RadioGroupItem value="ai_engineer" id="role-ai-engineer" className="mt-1" />
+                        <div className="space-y-1.5">
+                          <Label htmlFor="role-ai-engineer" className="text-base font-medium">AI Engineer</Label>
+                          <p className="text-sm text-muted-foreground">Works on artificial intelligence solutions</p>
+                        </div>
+                      </div>
+                    </div>
+                  </RadioGroup>
+                )}
+                
+                {/* Step 2: Learning Goal */}
+                {currentStep === 2 && (
+                  <RadioGroup value={learningGoal} onValueChange={(value) => setLearningGoal(value as LearningGoal)}>
                     <div className="grid gap-4 mt-2">
                       <div className="flex items-start space-x-3 p-3 rounded-md transition-colors hover:bg-muted/50">
                         <RadioGroupItem value="casual" id="goal-casual" className="mt-1" />
@@ -165,7 +251,7 @@ const Onboarding = () => {
                       <div className="flex items-start space-x-3 p-3 rounded-md transition-colors hover:bg-muted/50">
                         <RadioGroupItem value="skill" id="goal-skill" className="mt-1" />
                         <div className="space-y-1.5">
-                          <Label htmlFor="goal-skill" className="text-base font-medium">Specific Skill Development</Label>
+                          <Label htmlFor="goal-skill" className="text-base font-medium">Skill Development</Label>
                           <p className="text-sm text-muted-foreground">I want to build specific skills to use AI in my projects</p>
                         </div>
                       </div>
@@ -173,9 +259,9 @@ const Onboarding = () => {
                   </RadioGroup>
                 )}
                 
-                {/* Step 2: Target Time */}
-                {currentStep === 2 && (
-                  <RadioGroup value={targetTime?.toString()} onValueChange={(value) => setTargetTime(parseInt(value) as any)}>
+                {/* Step 3: Target Time */}
+                {currentStep === 3 && (
+                  <RadioGroup value={targetTime?.toString()} onValueChange={(value) => setTargetTime(parseInt(value) as TargetTime)}>
                     <div className="grid gap-4 mt-2">
                       <div className="flex items-start space-x-3 p-3 rounded-md transition-colors hover:bg-muted/50">
                         <RadioGroupItem value="5" id="time-5" className="mt-1" />
@@ -202,14 +288,64 @@ const Onboarding = () => {
                   </RadioGroup>
                 )}
                 
-                {/* Step 3: Learning Experience */}
-                {currentStep === 3 && (
-                  <RadioGroup value={learningExperience} onValueChange={(value) => setLearningExperience(value as any)}>
+                {/* Step 4: Weekly Frequency */}
+                {currentStep === 4 && (
+                  <RadioGroup value={weeklyFrequency} onValueChange={(value) => setWeeklyFrequency(value as WeeklyFrequency)}>
+                    <div className="grid gap-4 mt-2">
+                      <div className="flex items-start space-x-3 p-3 rounded-md transition-colors hover:bg-muted/50">
+                        <RadioGroupItem value="once" id="freq-once" className="mt-1" />
+                        <div className="space-y-1.5">
+                          <Label htmlFor="freq-once" className="text-base font-medium">Once a week</Label>
+                          <p className="text-sm text-muted-foreground">One learning session per week</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-3 p-3 rounded-md transition-colors hover:bg-muted/50">
+                        <RadioGroupItem value="twice" id="freq-twice" className="mt-1" />
+                        <div className="space-y-1.5">
+                          <Label htmlFor="freq-twice" className="text-base font-medium">Twice a week</Label>
+                          <p className="text-sm text-muted-foreground">Two learning sessions per week</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-3 p-3 rounded-md transition-colors hover:bg-muted/50">
+                        <RadioGroupItem value="thrice" id="freq-thrice" className="mt-1" />
+                        <div className="space-y-1.5">
+                          <Label htmlFor="freq-thrice" className="text-base font-medium">Three times a week</Label>
+                          <p className="text-sm text-muted-foreground">Three learning sessions per week</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-3 p-3 rounded-md transition-colors hover:bg-muted/50">
+                        <RadioGroupItem value="weekday" id="freq-weekday" className="mt-1" />
+                        <div className="space-y-1.5">
+                          <Label htmlFor="freq-weekday" className="text-base font-medium">Weekday</Label>
+                          <p className="text-sm text-muted-foreground">Learning on weekdays only</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-3 p-3 rounded-md transition-colors hover:bg-muted/50">
+                        <RadioGroupItem value="weekend" id="freq-weekend" className="mt-1" />
+                        <div className="space-y-1.5">
+                          <Label htmlFor="freq-weekend" className="text-base font-medium">Weekend</Label>
+                          <p className="text-sm text-muted-foreground">Learning on weekends only</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-3 p-3 rounded-md transition-colors hover:bg-muted/50">
+                        <RadioGroupItem value="daily" id="freq-daily" className="mt-1" />
+                        <div className="space-y-1.5">
+                          <Label htmlFor="freq-daily" className="text-base font-medium">Daily</Label>
+                          <p className="text-sm text-muted-foreground">Learn every day</p>
+                        </div>
+                      </div>
+                    </div>
+                  </RadioGroup>
+                )}
+                
+                {/* Step 5: Learning Experience */}
+                {currentStep === 5 && (
+                  <RadioGroup value={learningExperience} onValueChange={(value) => setLearningExperience(value as LearningExperience)}>
                     <div className="grid gap-4 mt-2">
                       <div className="flex items-start space-x-3 p-3 rounded-md transition-colors hover:bg-muted/50">
                         <RadioGroupItem value="voice" id="exp-voice" className="mt-1" />
                         <div className="space-y-1.5">
-                          <Label htmlFor="exp-voice" className="text-base font-medium">Voice-only</Label>
+                          <Label htmlFor="exp-voice" className="text-base font-medium">Hands-free voice only</Label>
                           <p className="text-sm text-muted-foreground">Listen to lessons like a podcast</p>
                         </div>
                       </div>
@@ -218,6 +354,13 @@ const Onboarding = () => {
                         <div className="space-y-1.5">
                           <Label htmlFor="exp-interactive" className="text-base font-medium">Interactive</Label>
                           <p className="text-sm text-muted-foreground">Learn through interactive exercises and visuals</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-3 p-3 rounded-md transition-colors hover:bg-muted/50">
+                        <RadioGroupItem value="both" id="exp-both" className="mt-1" />
+                        <div className="space-y-1.5">
+                          <Label htmlFor="exp-both" className="text-base font-medium">Both</Label>
+                          <p className="text-sm text-muted-foreground">Combine audio content with interactive elements</p>
                         </div>
                       </div>
                     </div>

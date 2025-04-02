@@ -1,15 +1,41 @@
-
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 
-type User = {
+export type CustomerRole = 
+  | "developer" 
+  | "administrator" 
+  | "data_analyst" 
+  | "student" 
+  | "solution_architect" 
+  | "it" 
+  | "data_engineer" 
+  | "security_engineer" 
+  | "ai_engineer";
+
+export type LearningGoal = "casual" | "professional" | "skill";
+
+export type TargetTime = 5 | 10 | 15;
+
+export type WeeklyFrequency = 
+  | "once" 
+  | "twice" 
+  | "thrice" 
+  | "weekday" 
+  | "weekend" 
+  | "daily";
+
+export type LearningExperience = "voice" | "interactive" | "both";
+
+export type User = {
   id: string;
   email: string;
   name: string;
   preferences?: {
-    learningGoal?: "casual" | "professional" | "skill";
-    targetTime?: 5 | 10 | 15;
-    learningExperience?: "voice" | "interactive";
+    customerRole?: CustomerRole;
+    learningGoal?: LearningGoal;
+    targetTime?: TargetTime;
+    weeklyFrequency?: WeeklyFrequency;
+    learningExperience?: LearningExperience;
   };
 };
 
@@ -31,7 +57,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { toast } = useToast();
 
   useEffect(() => {
-    // Check local storage for user data on initial load
     const storedUser = localStorage.getItem("aiLearnUser");
     if (storedUser) {
       try {
@@ -44,7 +69,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(false);
   }, []);
 
-  // Save user to localStorage whenever it changes
   useEffect(() => {
     if (user) {
       localStorage.setItem("aiLearnUser", JSON.stringify(user));
@@ -54,16 +78,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      // Simulating API call delay
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // For demo purposes, we're just checking if the email includes "@"
       if (!email.includes("@")) {
         throw new Error("Invalid email format");
       }
       
-      // In a real app, we'd validate credentials against a backend
-      // For now, we'll create a mock user
       const mockUser: User = {
         id: Date.now().toString(),
         email,
@@ -91,16 +111,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const register = async (name: string, email: string, password: string) => {
     setIsLoading(true);
     try {
-      // Simulating API call delay
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Validate email format
       if (!email.includes("@")) {
         throw new Error("Invalid email format");
       }
       
-      // In a real app, we'd register the user with a backend
-      // For now, we'll create a mock user
       const mockUser: User = {
         id: Date.now().toString(),
         email,
