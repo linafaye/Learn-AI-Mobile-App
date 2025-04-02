@@ -2,22 +2,16 @@
 import React from "react";
 import AppLayout from "@/components/AppLayout";
 import { useAuth } from "@/contexts/AuthContext";
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardHeader, 
-  CardTitle 
-} from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { Award, Star, Trophy, Clock, ChartBar, Bookmark, BookmarkCheck } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
-import { LearningCourse, getAllCourses } from "@/utils/learningPathUtils";
-import CourseCard from "@/components/CourseCard";
-import { Button } from "@/components/ui/button";
+import { getAllCourses } from "@/utils/learningPathUtils";
+import UserProgressStats from "@/components/progress/UserProgressStats";
+import LearningStatistics from "@/components/progress/LearningStatistics";
+import BadgesSection from "@/components/progress/BadgesSection";
+import RecentActivitySection from "@/components/progress/RecentActivitySection";
+import QueuedCoursesSection from "@/components/progress/QueuedCoursesSection";
+import { Star, Clock, Award, Trophy, ChartBar } from "lucide-react";
 
 const ProgressPage: React.FC = () => {
-  const { user, isInQueue, removeCourseFromQueue } = useAuth();
+  const { user } = useAuth();
   
   // Get all courses and filter for those in the queue
   const allCourses = getAllCourses();
@@ -86,175 +80,32 @@ const ProgressPage: React.FC = () => {
         </header>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <Trophy className="h-5 w-5 text-primary" />
-                <CardTitle>Current Level</CardTitle>
-              </div>
-              <CardDescription>
-                Your learning progress and achievements
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="flex items-center justify-between mb-2">
-                <div>
-                  <p className="text-lg font-semibold">{currentLevel?.name}</p>
-                  <p className="text-sm text-muted-foreground">{progressData.points} points</p>
-                </div>
-                <div className="bg-primary text-primary-foreground h-12 w-12 rounded-full flex items-center justify-center text-lg font-bold">
-                  {progressData.levels.indexOf(currentLevel as any) + 1}
-                </div>
-              </div>
-              
-              {nextLevelIndex < progressData.levels.length - 1 && (
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm">Progress to {progressData.levels[nextLevelIndex + 1].name}</p>
-                    <p className="text-sm font-medium">{progressToNextLevel}%</p>
-                  </div>
-                  <Progress value={progressToNextLevel} />
-                  <p className="text-xs text-muted-foreground">
-                    {pointsToNextLevel - (progressData.points - nextLevel!.threshold)} points to go
-                  </p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          <UserProgressStats 
+            currentLevel={currentLevel}
+            points={progressData.points}
+            progressToNextLevel={progressToNextLevel}
+            nextLevelIndex={nextLevelIndex}
+            pointsToNextLevel={pointsToNextLevel}
+            levels={progressData.levels}
+          />
           
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <ChartBar className="h-5 w-5 text-primary" />
-                <CardTitle>Learning Statistics</CardTitle>
-              </div>
-              <CardDescription>
-                Your learning activity and progress
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="space-y-4">
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-sm">Courses Completed</p>
-                    <p className="text-sm font-medium">{progressData.completedCourses}/{progressData.totalCourses}</p>
-                  </div>
-                  <Progress value={courseCompletionPercentage} />
-                </div>
-                
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-sm">Lessons Completed</p>
-                    <p className="text-sm font-medium">{progressData.completedLessons}/{progressData.totalLessons}</p>
-                  </div>
-                  <Progress value={lessonCompletionPercentage} />
-                </div>
-                
-                <div className="flex items-center justify-between pt-2">
-                  <div>
-                    <p className="text-sm font-medium">Current Streak</p>
-                    <p className="text-2xl font-bold">{progressData.currentStreak} days</p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Longest Streak</p>
-                    <p className="text-2xl font-bold">{progressData.longestStreak} days</p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <LearningStatistics 
+            completedCourses={progressData.completedCourses}
+            totalCourses={progressData.totalCourses}
+            completedLessons={progressData.completedLessons}
+            totalLessons={progressData.totalLessons}
+            currentStreak={progressData.currentStreak}
+            longestStreak={progressData.longestStreak}
+            courseCompletionPercentage={courseCompletionPercentage}
+            lessonCompletionPercentage={lessonCompletionPercentage}
+          />
         </div>
         
-        {/* Queued Courses Section */}
-        {queuedCourses.length > 0 && (
-          <Card className="mb-8">
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <BookmarkCheck className="h-5 w-5 text-primary" />
-                <CardTitle>Your Learning Queue</CardTitle>
-              </div>
-              <CardDescription>
-                Courses you've saved to learn later
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {queuedCourses.map((course) => (
-                  <CourseCard key={course.id} course={course} />
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        )}
+        <QueuedCoursesSection courses={queuedCourses} />
         
-        <Card className="mb-8">
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Award className="h-5 w-5 text-primary" />
-              <CardTitle>Badges & Achievements</CardTitle>
-            </div>
-            <CardDescription>
-              Achievements you've earned through your learning journey
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-              {progressData.badges.map((badge, index) => (
-                <div 
-                  key={index} 
-                  className={`flex flex-col items-center justify-center p-4 rounded-lg border ${
-                    badge.achieved ? 'bg-primary/10 border-primary' : 'bg-muted/50 border-border text-muted-foreground'
-                  }`}
-                >
-                  <div className={`p-3 rounded-full mb-2 ${
-                    badge.achieved ? 'bg-primary/20' : 'bg-muted'
-                  }`}>
-                    <badge.icon className={`h-6 w-6 ${
-                      badge.achieved ? 'text-primary' : 'text-muted-foreground'
-                    }`} />
-                  </div>
-                  <p className="text-sm font-medium text-center">{badge.name}</p>
-                  <p className="text-xs text-center mt-1">{badge.description}</p>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        <BadgesSection badges={progressData.badges} />
         
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Clock className="h-5 w-5 text-primary" />
-              <CardTitle>Recent Activity</CardTitle>
-            </div>
-            <CardDescription>
-              Your latest learning activities
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {progressData.recentActivity.map((activity, index) => (
-                <div key={index}>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">{activity.name}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {activity.type === 'lesson_completed' ? 'Lesson Completed' : 
-                         activity.type === 'quiz_completed' ? 'Quiz Completed' : 
-                         'Course Completed'} · {activity.date}
-                      </p>
-                    </div>
-                    <div className="flex items-center text-primary">
-                      <p className="font-semibold">+{activity.points}</p>
-                      <Star className="h-4 w-4 ml-1" />
-                    </div>
-                  </div>
-                  {index < progressData.recentActivity.length - 1 && <Separator className="mt-4" />}
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        <RecentActivitySection activities={progressData.recentActivity} />
       </div>
     </AppLayout>
   );
