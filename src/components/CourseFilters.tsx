@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { SearchIcon, Headphones, MousePointer, FileText } from "lucide-react";
+import { SearchIcon, Headphones, MousePointer, FileText, Video } from "lucide-react";
 import { ContentFormat } from "@/utils/learningPathUtils";
 
 interface CourseFiltersProps {
@@ -52,6 +52,14 @@ const CourseFilters: React.FC<CourseFiltersProps> = ({
           >
             <Headphones className="mr-1 h-4 w-4" />
             Audio
+          </Button>
+          <Button 
+            variant={formatFilter === "video" ? "default" : "outline"} 
+            size="sm"
+            onClick={() => filterByFormat("video")}
+          >
+            <Video className="mr-1 h-4 w-4" />
+            Video
           </Button>
           <Button 
             variant={formatFilter === "interactive" ? "default" : "outline"} 

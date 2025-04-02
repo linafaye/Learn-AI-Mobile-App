@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { 
   Headphones,
   MousePointer,
+  Video
 } from "lucide-react";
 import { LearningCourse } from "@/utils/learningPathUtils";
 import { useAuth } from "@/contexts/AuthContext";
@@ -23,6 +24,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
   const getFormatIcon = () => {
     switch(course.format) {
       case "audio": return Headphones;
+      case "video": return Video;
       default: return MousePointer;
     }
   };
