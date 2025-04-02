@@ -2,21 +2,18 @@
 import { Progress } from "@/components/ui/progress";
 
 interface CourseProgressProps {
-  value?: number;
+  value: number;
 }
 
 const CourseProgress: React.FC<CourseProgressProps> = ({ value }) => {
-  if (value === undefined || value <= 0) {
-    return null;
-  }
-
   return (
-    <div className="mb-4 space-y-1">
-      <div className="flex justify-between text-xs">
-        <span>Progress</span>
-        <span>{value}%</span>
+    <div className="mb-4">
+      <div className="flex justify-between text-sm mb-1">
+        <span>{value > 0 ? `${value}% complete` : "Not started"}</span>
+        {value > 0 && value < 100 && <span className="text-primary">Continue</span>}
+        {value === 100 && <span className="text-green-500">Completed</span>}
       </div>
-      <Progress value={value} className="h-1.5" />
+      <Progress value={value} className="h-2" />
     </div>
   );
 };

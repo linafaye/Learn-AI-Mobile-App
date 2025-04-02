@@ -1,7 +1,7 @@
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { PlayCircle, BookOpen, Headphones, MousePointer } from "lucide-react";
+import { PlayCircle, BookOpen, Headphones, MousePointer, Video } from "lucide-react";
 import { LearningCourse } from "@/utils/learningPathUtils";
 import CourseMetadata from "../CourseMetadata";
 import CourseProgress from "../CourseProgress";
@@ -11,16 +11,36 @@ interface RecommendedCourseCardProps {
 }
 
 const RecommendedCourseCard: React.FC<RecommendedCourseCardProps> = ({ course }) => {
-  const FormatIcon = course.format === "audio" ? Headphones : MousePointer;
+  const getFormatIcon = () => {
+    switch(course.format) {
+      case "audio": return Headphones;
+      case "video": return Video;
+      default: return MousePointer;
+    }
+  };
+  const FormatIcon = getFormatIcon();
   
   return (
     <Card className="overflow-hidden flex flex-col hover:shadow-md transition-shadow">
       <div className="aspect-video bg-muted flex items-center justify-center p-6">
-        <img 
-          src={course.image} 
-          alt={course.title}
-          className="w-20 h-20 object-contain"
-        />
+        {course.format === "video" && course.videoUrl ? (
+          <div className="w-full h-full flex items-center justify-center relative">
+            <img 
+              src={course.image} 
+              alt={course.title}
+              className="w-full h-full object-cover opacity-60"
+            />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Video className="w-12 h-12 text-primary opacity-90" />
+            </div>
+          </div>
+        ) : (
+          <img 
+            src={course.image} 
+            alt={course.title}
+            className="w-20 h-20 object-contain"
+          />
+        )}
       </div>
       <div className="p-4 flex flex-col flex-1">
         <div className="flex justify-between items-start mb-2">
@@ -39,7 +59,7 @@ const RecommendedCourseCard: React.FC<RecommendedCourseCardProps> = ({ course })
           FormatIcon={FormatIcon} 
         />
         
-        <CourseProgress value={course.progress} />
+        <CourseProgress value={course.progress || 0} />
         
         <div className="mt-auto">
           <Button className="w-full" size="sm">

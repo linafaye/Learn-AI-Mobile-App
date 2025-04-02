@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { SearchIcon, Headphones, MousePointer } from "lucide-react";
+import { SearchIcon, Headphones, MousePointer, Video } from "lucide-react";
 import { ContentFormat } from "@/utils/learningPathUtils";
 
 interface CourseFiltersProps {
@@ -37,7 +37,7 @@ const CourseFilters: React.FC<CourseFiltersProps> = ({
           />
         </form>
         
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
           <Button 
             variant={formatFilter === "all" ? "default" : "outline"} 
             size="sm"
@@ -60,6 +60,14 @@ const CourseFilters: React.FC<CourseFiltersProps> = ({
           >
             <MousePointer className="mr-1 h-4 w-4" />
             Interactive
+          </Button>
+          <Button 
+            variant={formatFilter === "video" ? "default" : "outline"} 
+            size="sm"
+            onClick={() => filterByFormat("video")}
+          >
+            <Video className="mr-1 h-4 w-4" />
+            Video
           </Button>
         </div>
       </div>

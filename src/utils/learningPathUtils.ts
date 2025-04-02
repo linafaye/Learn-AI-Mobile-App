@@ -6,7 +6,7 @@ import {
   LearningExperience 
 } from "@/contexts/AuthContext";
 
-export type ContentFormat = "audio" | "interactive" | "text";
+export type ContentFormat = "audio" | "interactive" | "text" | "video";
 export type LearningLevel = "beginner" | "intermediate" | "advanced";
 
 export interface LearningPath {
@@ -30,9 +30,9 @@ export interface LearningCourse {
   progress?: number;
   audioUrl?: string; // URL to audio file
   audioContent?: string; // Text content for audio narration
+  videoUrl?: string; // URL to video file
 }
 
-// Mock courses data with format types and audio content
 const allCourses: LearningCourse[] = [
   {
     id: 1,
@@ -235,10 +235,33 @@ const allCourses: LearningCourse[] = [
     However, implementing AI in business requires careful consideration of data quality, integration with existing systems, talent acquisition, and ethical implications. Organizations must develop clear strategies that align AI initiatives with business objectives.
     
     As we proceed, we'll explore specific case studies of successful AI implementation in various industries and discuss best practices for leveraging AI in business contexts.`
+  },
+  {
+    id: 9,
+    title: "Computer Vision with Deep Learning",
+    description: "A video tutorial on implementing advanced computer vision techniques with deep learning",
+    category: "Deep Learning",
+    level: "advanced",
+    format: "video",
+    duration: 20,
+    progress: 0,
+    image: "https://cdn-icons-png.flaticon.com/512/2103/2103674.png",
+    videoUrl: "https://storage.googleapis.com/aicontent/samples/computer_vision_deep_learning.mp4"
+  },
+  {
+    id: 10,
+    title: "Practical NLP Applications",
+    description: "Video course on building practical NLP applications in various domains",
+    category: "NLP",
+    level: "intermediate",
+    format: "video",
+    duration: 25,
+    progress: 0,
+    image: "https://cdn-icons-png.flaticon.com/512/2103/2103666.png",
+    videoUrl: "https://storage.googleapis.com/aicontent/samples/nlp_applications.mp4"
   }
 ];
 
-// Predefined learning paths
 const predefinedPaths: LearningPath[] = [
   {
     id: "ai-fundamentals",
@@ -274,9 +297,6 @@ const predefinedPaths: LearningPath[] = [
   }
 ];
 
-/**
- * Get a personalized learning path based on user preferences
- */
 export const getRecommendedPath = (user: User | null): LearningPath | null => {
   if (!user?.preferences) return null;
   
@@ -284,7 +304,6 @@ export const getRecommendedPath = (user: User | null): LearningPath | null => {
   
   let recommendedPathId = "";
   
-  // Determine path based on role and learning goal
   if (customerRole) {
     switch (customerRole) {
       case "developer":
@@ -307,7 +326,6 @@ export const getRecommendedPath = (user: User | null): LearningPath | null => {
         recommendedPathId = "ai-fundamentals";
         break;
       default:
-        // Fall back to learning goal if role doesn't have a specific mapping
         switch (learningGoal) {
           case "casual":
             recommendedPathId = "ai-fundamentals";
@@ -323,7 +341,6 @@ export const getRecommendedPath = (user: User | null): LearningPath | null => {
         }
     }
   } else {
-    // Determine path based on learning goal if no role is specified
     switch (learningGoal) {
       case "casual":
         recommendedPathId = "ai-fundamentals";
@@ -339,19 +356,15 @@ export const getRecommendedPath = (user: User | null): LearningPath | null => {
     }
   }
   
-  // Find the base path
   let recommendedPath = predefinedPaths.find(path => path.id === recommendedPathId);
   if (!recommendedPath) return null;
   
-  // Filter courses based on learning experience preference if specified
   if (learningExperience) {
-    // Create a copy of the path
     const customizedPath = {
       ...recommendedPath,
       courses: [...recommendedPath.courses]
     };
     
-    // Map the UI preference to content format(s)
     let preferredFormats: ContentFormat[] = [];
     switch (learningExperience) {
       case "voice":
@@ -361,25 +374,21 @@ export const getRecommendedPath = (user: User | null): LearningPath | null => {
         preferredFormats = ["interactive"];
         break;
       case "both":
-        preferredFormats = ["audio", "interactive"];
+        preferredFormats = ["audio", "interactive", "video"];
         break;
     }
     
-    // Prioritize courses with the preferred format(s), but keep at least one course of each format
-    // to provide a balanced experience
     const preferredCourses = allCourses.filter(course => 
       preferredFormats.includes(course.format) && 
       !customizedPath.courses.some(c => c.id === course.id)
     );
     
-    // Add up to 2 preferred format courses if available
     if (preferredCourses.length > 0) {
       customizedPath.courses = [
         ...customizedPath.courses,
         ...preferredCourses.slice(0, 2)
       ];
       
-      // Update total duration
       customizedPath.totalDuration = customizedPath.courses.reduce(
         (total, course) => total + course.duration, 0
       );
@@ -391,18 +400,13 @@ export const getRecommendedPath = (user: User | null): LearningPath | null => {
   return recommendedPath;
 };
 
-/**
- * Get recommended courses based on user preferences
- */
 export const getRecommendedCourses = (user: User | null, limit: number = 3): LearningCourse[] => {
   if (!user?.preferences) return allCourses.slice(0, limit);
   
   const { learningExperience, customerRole, targetTime } = user.preferences;
   let filteredCourses = [...allCourses];
   
-  // Filter by role if available
   if (customerRole) {
-    // Prioritize courses that match the user's role
     switch (customerRole) {
       case "developer":
       case "ai_engineer":
@@ -420,11 +424,9 @@ export const getRecommendedCourses = (user: User | null, limit: number = 3): Lea
           return aTags.includes(a.category.toLowerCase()) && !bTags.includes(b.category.toLowerCase()) ? -1 : 1;
         });
         break;
-      // Add more role-based sorting logic as needed
     }
   }
   
-  // If user has a time preference, prioritize courses that match
   if (targetTime) {
     filteredCourses.sort((a, b) => {
       const aTimeDiff = Math.abs(a.duration - targetTime);
@@ -433,7 +435,6 @@ export const getRecommendedCourses = (user: User | null, limit: number = 3): Lea
     });
   }
   
-  // If user has a format preference, prioritize those courses
   if (learningExperience) {
     let preferredFormats: ContentFormat[] = [];
     switch (learningExperience) {
@@ -441,14 +442,13 @@ export const getRecommendedCourses = (user: User | null, limit: number = 3): Lea
         preferredFormats = ["audio"];
         break;
       case "interactive":
-        preferredFormats = ["interactive"];
+        preferredFormats = ["interactive", "video"];
         break;
       case "both":
-        preferredFormats = ["audio", "interactive"];
+        preferredFormats = ["audio", "interactive", "video"];
         break;
     }
     
-    // Sort courses so preferred format appears first
     filteredCourses.sort((a, b) => {
       if (preferredFormats.includes(a.format) && !preferredFormats.includes(b.format)) return -1;
       if (!preferredFormats.includes(a.format) && preferredFormats.includes(b.format)) return 1;
@@ -459,7 +459,6 @@ export const getRecommendedCourses = (user: User | null, limit: number = 3): Lea
   return filteredCourses.slice(0, limit);
 };
 
-// Export all courses for use in other components
 export const getAllCourses = (): LearningCourse[] => {
   return allCourses;
 };
