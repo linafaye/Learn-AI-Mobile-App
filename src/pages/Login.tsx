@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
@@ -24,13 +23,11 @@ const Login = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   
-  // Login form state
   const [loginData, setLoginData] = useState({
     email: "",
     password: ""
   });
   
-  // Register form state
   const [registerData, setRegisterData] = useState({
     name: "",
     email: "",
@@ -46,7 +43,6 @@ const Login = () => {
       await login(loginData.email, loginData.password);
       navigate("/onboarding");
     } catch (error) {
-      // Error is already handled in the AuthContext
       console.error("Login error:", error);
     } finally {
       setIsLoading(false);
@@ -70,7 +66,6 @@ const Login = () => {
       await register(registerData.name, registerData.email, registerData.password);
       navigate("/onboarding");
     } catch (error) {
-      // Error is already handled in the AuthContext
       console.error("Register error:", error);
     } finally {
       setIsLoading(false);
@@ -103,9 +98,7 @@ const Login = () => {
   
   const SocialLoginButtons = () => (
     <div className="space-y-4 mt-6">
-      <Separator className="my-4">
-        <span className="px-2 text-muted-foreground text-xs">OR CONTINUE WITH</span>
-      </Separator>
+      <Separator className="my-4" />
       
       <div className="grid grid-cols-2 gap-3 mt-4">
         <Button 
