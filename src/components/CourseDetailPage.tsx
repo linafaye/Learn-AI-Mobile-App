@@ -2,7 +2,6 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import AppLayout from "@/components/AppLayout";
-import { LearningCourse } from "@/utils/learningPathUtils";
 import { getAllCourses } from "@/utils/learningPathUtils";
 import CourseVideoPlayer from './CourseVideoPlayer';
 import { Button } from "@/components/ui/button";

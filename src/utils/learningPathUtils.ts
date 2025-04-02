@@ -40,7 +40,7 @@ const allCourses: LearningCourse[] = [
     description: "Learn the fundamentals of artificial intelligence and how it's transforming industries",
     category: "Fundamentals",
     level: "beginner",
-    format: "audio",
+    format: "video",
     duration: 15,
     progress: 45,
     image: "https://cdn-icons-png.flaticon.com/512/2103/2103652.png",
@@ -55,7 +55,8 @@ const allCourses: LearningCourse[] = [
     
     However, AI development comes with important ethical considerations. We must address issues of bias in algorithms, ensure transparency in decision-making processes, protect privacy, and consider the impact of automation on employment.
     
-    As we continue to advance AI technologies, responsible innovation will be key to maximizing benefits while minimizing potential risks.`
+    As we continue to advance AI technologies, responsible innovation will be key to maximizing benefits while minimizing potential risks.`,
+    videoUrl: "https://www.youtube.com/watch?v=ad79nYk2keg"
   },
   {
     id: "2",
@@ -113,7 +114,7 @@ const allCourses: LearningCourse[] = [
     description: "Learn about ethical considerations in AI development",
     category: "Ethics",
     level: "beginner",
-    format: "audio",
+    format: "video",
     duration: 10,
     progress: 0,
     image: "https://cdn-icons-png.flaticon.com/512/2103/2103618.png",
@@ -130,7 +131,8 @@ const allCourses: LearningCourse[] = [
     
     Additionally, we must consider the impact of AI on employment and economic inequality. As automation replaces certain jobs, how do we ensure economic opportunities remain accessible to all?
     
-    Responsible AI development requires diverse teams, rigorous testing, ongoing monitoring, and clear guidelines for intervention when systems don't perform as intended. By prioritizing ethics from the start, we can harness AI's potential while minimizing harm.`
+    Responsible AI development requires diverse teams, rigorous testing, ongoing monitoring, and clear guidelines for intervention when systems don't perform as intended. By prioritizing ethics from the start, we can harness AI's potential while minimizing harm.`,
+    videoUrl: "https://www.youtube.com/watch?v=uMzUB89uSxU"
   },
   {
     id: "5",

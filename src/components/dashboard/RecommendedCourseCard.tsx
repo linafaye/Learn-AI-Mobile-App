@@ -1,12 +1,13 @@
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { PlayCircle, BookOpen, Headphones, MousePointer } from "lucide-react";
+import { PlayCircle, BookOpen, Headphones, MousePointer, Video } from "lucide-react";
 import { LearningCourse } from "@/utils/learningPathUtils";
 import CourseMetadata from "../CourseMetadata";
 import CourseProgress from "../CourseProgress";
 import { useAuth } from "@/contexts/AuthContext";
 import CourseBookmarkButton from "../CourseBookmarkButton";
+import { useNavigate } from "react-router-dom";
 
 interface RecommendedCourseCardProps {
   course: LearningCourse;
@@ -14,6 +15,7 @@ interface RecommendedCourseCardProps {
 
 const RecommendedCourseCard: React.FC<RecommendedCourseCardProps> = ({ course }) => {
   const { addCourseToQueue, removeCourseFromQueue, isInQueue } = useAuth();
+  const navigate = useNavigate();
   const inQueue = isInQueue(course.id);
   
   const handleQueueToggle = () => {
@@ -24,9 +26,14 @@ const RecommendedCourseCard: React.FC<RecommendedCourseCardProps> = ({ course })
     }
   };
   
+  const handleStartCourse = () => {
+    navigate(`/course/${course.id}`);
+  };
+  
   const getFormatIcon = () => {
     switch(course.format) {
       case "audio": return Headphones;
+      case "video": return Video;
       case "interactive": return MousePointer;
       default: return MousePointer;
     }
@@ -68,7 +75,7 @@ const RecommendedCourseCard: React.FC<RecommendedCourseCardProps> = ({ course })
         <CourseProgress value={course.progress || 0} />
         
         <div className="mt-auto">
-          <Button className="w-full" size="sm">
+          <Button className="w-full" size="sm" onClick={handleStartCourse}>
             {course.progress !== undefined && course.progress > 0 ? (
               <>
                 <PlayCircle className="mr-2 h-4 w-4" />
