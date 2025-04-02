@@ -26,9 +26,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
   // Check if user needs to complete onboarding
   // Don't redirect to onboarding if user is already on onboarding page
+  // Also don't redirect if user is on learn page, since that's where they're sent if they close the dialog
   if (user && 
       !hasCompletedOnboarding(user) && 
-      location.pathname !== "/onboarding") {
+      location.pathname !== "/onboarding" &&
+      location.pathname !== "/learn") {
     return <Navigate to="/onboarding" replace />;
   }
 

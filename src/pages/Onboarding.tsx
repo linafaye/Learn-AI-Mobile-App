@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useAuth, CustomerRole, LearningGoal, TargetTime, WeeklyFrequency, LearningExperience } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -43,6 +44,16 @@ const Onboarding = () => {
       setDialogOpen(true);
     }
   }, [user, navigate]);
+
+  // Handle dialog close
+  const handleDialogChange = (open: boolean) => {
+    setDialogOpen(open);
+    
+    // If user closes the dialog, navigate to learn page
+    if (!open) {
+      navigate("/learn");
+    }
+  };
 
   const hasCompletedOnboarding = (user: any) => {
     if (!user.preferences) return false;
@@ -153,7 +164,7 @@ const Onboarding = () => {
             </p>
           </div>
           
-          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <Dialog open={dialogOpen} onOpenChange={handleDialogChange}>
             <DialogContent className="sm:max-w-md">
               <DialogHeader>
                 <div className="mb-4">
