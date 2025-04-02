@@ -11,8 +11,7 @@ import {
 import { LearningPathCard } from "@/components/LearningPathCard";
 import CourseFilters from "@/components/CourseFilters";
 import CourseGrid from "@/components/CourseGrid";
-import { Input } from "@/components/ui/input";
-import { SearchIcon, TrendingUp } from "lucide-react";
+import { TrendingUp } from "lucide-react";
 import PopularCategories from "@/components/PopularCategories";
 import TrendingCourses from "@/components/TrendingCourses";
 
@@ -113,16 +112,6 @@ const Learn = () => {
             Discover AI learning materials and courses
           </p>
         </header>
-        
-        <form onSubmit={handleSearch} className="relative mb-8">
-          <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search courses and topics..."
-            className="pl-10"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </form>
         
         {!showFullGrid && (
           <>
