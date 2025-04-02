@@ -1,6 +1,6 @@
 
 import { useAuth } from "@/contexts/AuthContext";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 
 interface ProtectedRouteProps {
@@ -8,7 +8,8 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, user } = useAuth();
+  const location = useLocation();
 
   if (isLoading) {
     return (
@@ -23,7 +24,28 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     return <Navigate to="/login" replace />;
   }
 
+  // Check if user needs to complete onboarding
+  // Don't redirect to onboarding if user is already on onboarding page
+  if (user && 
+      !hasCompletedOnboarding(user) && 
+      location.pathname !== "/onboarding") {
+    return <Navigate to="/onboarding" replace />;
+  }
+
   return <>{children}</>;
+};
+
+// Helper function to check if user has completed onboarding
+const hasCompletedOnboarding = (user: any) => {
+  if (!user.preferences) return false;
+  
+  return !!(
+    user.preferences.customerRole &&
+    user.preferences.learningGoal &&
+    user.preferences.targetTime &&
+    user.preferences.weeklyFrequency &&
+    user.preferences.learningExperience
+  );
 };
 
 export default ProtectedRoute;

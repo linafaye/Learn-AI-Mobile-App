@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useAuth, CustomerRole, LearningGoal, TargetTime, WeeklyFrequency, LearningExperience } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -37,8 +38,28 @@ const Onboarding = () => {
   const progress = Math.round((currentStep / totalSteps) * 100);
 
   useEffect(() => {
-    setDialogOpen(true);
-  }, []);
+    // Check if user has already completed onboarding
+    if (user && hasCompletedOnboarding(user)) {
+      // Redirect to dashboard if already completed
+      navigate("/dashboard");
+    } else {
+      // Only show dialog if onboarding not completed
+      setDialogOpen(true);
+    }
+  }, [user, navigate]);
+
+  // Helper function to check if user has completed onboarding
+  const hasCompletedOnboarding = (user: any) => {
+    if (!user.preferences) return false;
+    
+    return !!(
+      user.preferences.customerRole &&
+      user.preferences.learningGoal &&
+      user.preferences.targetTime &&
+      user.preferences.weeklyFrequency &&
+      user.preferences.learningExperience
+    );
+  };
 
   const nextStep = () => {
     setCurrentStep((prev) => {
