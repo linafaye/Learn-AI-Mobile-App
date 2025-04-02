@@ -1,14 +1,25 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Star, Clock, Plus } from "lucide-react";
+import { Star, Clock, BookmarkCheck, Bookmark } from "lucide-react";
 import { LearningCourse } from "@/utils/learningPathUtils";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface TrendingCoursesProps {
   courses: LearningCourse[];
 }
 
 const TrendingCourses: React.FC<TrendingCoursesProps> = ({ courses }) => {
+  const { addCourseToQueue, removeCourseFromQueue, isInQueue } = useAuth();
+  
+  const handleQueueToggle = (courseId: string) => {
+    if (isInQueue(courseId)) {
+      removeCourseFromQueue(courseId);
+    } else {
+      addCourseToQueue(courseId);
+    }
+  };
+  
   return (
     <div className="space-y-4">
       {courses.map(course => (
@@ -39,9 +50,23 @@ const TrendingCourses: React.FC<TrendingCoursesProps> = ({ courses }) => {
               </div>
               
               <div className="p-4 flex items-center md:border-l md:border-t-0 border-t">
-                <Button className="w-full" size="sm">
-                  <Plus className="h-4 w-4 mr-1" />
-                  Add to Queue
+                <Button 
+                  onClick={() => handleQueueToggle(course.id)} 
+                  className="w-full" 
+                  size="sm"
+                  variant={isInQueue(course.id) ? "outline" : "default"}
+                >
+                  {isInQueue(course.id) ? (
+                    <>
+                      <BookmarkCheck className="h-4 w-4 mr-1" />
+                      In Queue
+                    </>
+                  ) : (
+                    <>
+                      <Bookmark className="h-4 w-4 mr-1" />
+                      Add to Queue
+                    </>
+                  )}
                 </Button>
               </div>
             </div>

@@ -5,7 +5,6 @@ import {
   Headphones,
   MousePointer,
   Video,
-  Youtube
 } from "lucide-react";
 import { LearningCourse } from "@/utils/learningPathUtils";
 import { useAuth } from "@/contexts/AuthContext";
