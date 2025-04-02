@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useAuth, CustomerRole, LearningGoal, TargetTime, WeeklyFrequency, LearningExperience } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -38,17 +37,13 @@ const Onboarding = () => {
   const progress = Math.round((currentStep / totalSteps) * 100);
 
   useEffect(() => {
-    // Check if user has already completed onboarding
     if (user && hasCompletedOnboarding(user)) {
-      // Redirect to dashboard if already completed
       navigate("/dashboard");
     } else {
-      // Only show dialog if onboarding not completed
       setDialogOpen(true);
     }
   }, [user, navigate]);
 
-  // Helper function to check if user has completed onboarding
   const hasCompletedOnboarding = (user: any) => {
     if (!user.preferences) return false;
     
@@ -329,20 +324,6 @@ const Onboarding = () => {
                         <div className="space-y-1.5">
                           <Label htmlFor="freq-thrice" className="text-base font-medium">Three times a week</Label>
                           <p className="text-sm text-muted-foreground">Three learning sessions per week</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start space-x-3 p-3 rounded-md transition-colors hover:bg-muted/50">
-                        <RadioGroupItem value="weekday" id="freq-weekday" className="mt-1" />
-                        <div className="space-y-1.5">
-                          <Label htmlFor="freq-weekday" className="text-base font-medium">Weekday</Label>
-                          <p className="text-sm text-muted-foreground">Learning on weekdays only</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start space-x-3 p-3 rounded-md transition-colors hover:bg-muted/50">
-                        <RadioGroupItem value="weekend" id="freq-weekend" className="mt-1" />
-                        <div className="space-y-1.5">
-                          <Label htmlFor="freq-weekend" className="text-base font-medium">Weekend</Label>
-                          <p className="text-sm text-muted-foreground">Learning on weekends only</p>
                         </div>
                       </div>
                       <div className="flex items-start space-x-3 p-3 rounded-md transition-colors hover:bg-muted/50">
