@@ -295,67 +295,6 @@ const allCourses: LearningCourse[] = [
     progress: 0,
     image: "https://cdn-icons-png.flaticon.com/512/2103/2103618.png",
     videoUrl: "https://www.youtube.com/watch?v=dvzAm-g4yBM"
-  },
-  // Add new AI videos
-  {
-    id: 14,
-    title: "The Future of AI in Business",
-    description: "Learn how artificial intelligence is transforming businesses and industries",
-    category: "Business",
-    level: "intermediate",
-    format: "video",
-    duration: 21,
-    progress: 0,
-    image: "https://cdn-icons-png.flaticon.com/512/2103/2103611.png",
-    videoUrl: "https://www.youtube.com/watch?v=KnjkfarZgGQ"
-  },
-  {
-    id: 15,
-    title: "Understanding Supervised Learning",
-    description: "Comprehensive overview of supervised learning algorithms and applications",
-    category: "Machine Learning",
-    level: "intermediate",
-    format: "video",
-    duration: 19,
-    progress: 0,
-    image: "https://cdn-icons-png.flaticon.com/512/2103/2103633.png",
-    videoUrl: "https://www.youtube.com/watch?v=8qNPRAaQJJs"
-  },
-  {
-    id: 16,
-    title: "Deep Learning and Neural Networks",
-    description: "Detailed exploration of neural network architectures and deep learning techniques",
-    category: "Deep Learning",
-    level: "advanced",
-    format: "video",
-    duration: 25,
-    progress: 0,
-    image: "https://cdn-icons-png.flaticon.com/512/2103/2103674.png",
-    videoUrl: "https://www.youtube.com/watch?v=DooxDIRAkPA"
-  },
-  {
-    id: 17,
-    title: "AI in Healthcare Applications",
-    description: "How artificial intelligence is revolutionizing healthcare diagnostics and treatments",
-    category: "Healthcare",
-    level: "intermediate",
-    format: "video",
-    duration: 23,
-    progress: 0,
-    image: "https://cdn-icons-png.flaticon.com/512/2103/2103645.png",
-    videoUrl: "https://www.youtube.com/watch?v=mZYkAuoiZJA"
-  },
-  {
-    id: 18,
-    title: "Reinforcement Learning Explained",
-    description: "Learn how reinforcement learning works and its applications in AI systems",
-    category: "Machine Learning",
-    level: "advanced",
-    format: "video",
-    duration: 22,
-    progress: 0,
-    image: "https://cdn-icons-png.flaticon.com/512/2103/2103658.png",
-    videoUrl: "https://www.youtube.com/watch?v=2pWv7GOvuf0"
   }
 ];
 
