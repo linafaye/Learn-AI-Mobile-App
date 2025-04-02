@@ -2,6 +2,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate, useLocation } from "react-router-dom";
 import { Loader2 } from "lucide-react";
+import { hasCompletedOnboarding } from "@/utils/onboardingUtils";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -35,19 +36,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   }
 
   return <>{children}</>;
-};
-
-// Helper function to check if user has completed onboarding
-const hasCompletedOnboarding = (user: any) => {
-  if (!user.preferences) return false;
-  
-  return !!(
-    user.preferences.customerRole &&
-    user.preferences.learningGoal &&
-    user.preferences.targetTime &&
-    user.preferences.weeklyFrequency &&
-    user.preferences.learningExperience
-  );
 };
 
 export default ProtectedRoute;
