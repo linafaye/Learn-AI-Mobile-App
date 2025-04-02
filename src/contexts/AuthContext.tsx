@@ -21,6 +21,7 @@ export type User = {
   email: string;
   name: string;
   preferences?: UserPreferences;
+  provider?: "email" | "github" | "linkedin";
 };
 
 interface AuthContextType {
@@ -29,6 +30,8 @@ interface AuthContextType {
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
+  loginWithGithub: () => Promise<void>;
+  loginWithLinkedin: () => Promise<void>;
   logout: () => void;
   updateUserPreferences: (preferences: User["preferences"]) => void;
 }
@@ -72,6 +75,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         id: Date.now().toString(),
         email,
         name: email.split("@")[0],
+        provider: "email",
       };
       
       setUser(mockUser);
@@ -105,6 +109,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         id: Date.now().toString(),
         email,
         name,
+        provider: "email",
       };
       
       setUser(mockUser);
@@ -117,6 +122,68 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       toast({
         title: "Registration failed",
         description: error instanceof Error ? error.message : "An unknown error occurred",
+        variant: "destructive",
+      });
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const loginWithGithub = async () => {
+    setIsLoading(true);
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Mock GitHub login
+      const mockUser: User = {
+        id: Date.now().toString(),
+        email: `github_user_${Math.floor(Math.random() * 1000)}@example.com`,
+        name: `GitHub User ${Math.floor(Math.random() * 1000)}`,
+        provider: "github",
+      };
+      
+      setUser(mockUser);
+      toast({
+        title: "GitHub login successful",
+        description: `Welcome, ${mockUser.name}!`,
+      });
+    } catch (error) {
+      console.error("GitHub login failed:", error);
+      toast({
+        title: "GitHub login failed",
+        description: "Could not authenticate with GitHub",
+        variant: "destructive",
+      });
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const loginWithLinkedin = async () => {
+    setIsLoading(true);
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Mock LinkedIn login
+      const mockUser: User = {
+        id: Date.now().toString(),
+        email: `linkedin_user_${Math.floor(Math.random() * 1000)}@example.com`,
+        name: `LinkedIn User ${Math.floor(Math.random() * 1000)}`,
+        provider: "linkedin",
+      };
+      
+      setUser(mockUser);
+      toast({
+        title: "LinkedIn login successful",
+        description: `Welcome, ${mockUser.name}!`,
+      });
+    } catch (error) {
+      console.error("LinkedIn login failed:", error);
+      toast({
+        title: "LinkedIn login failed",
+        description: "Could not authenticate with LinkedIn",
         variant: "destructive",
       });
       throw error;
@@ -152,6 +219,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isLoading,
         login,
         register,
+        loginWithGithub,
+        loginWithLinkedin,
         logout,
         updateUserPreferences,
       }}

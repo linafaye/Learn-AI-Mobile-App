@@ -13,12 +13,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Loader2 } from "lucide-react";
+import { Loader2, Github, Linkedin } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { Separator } from "@/components/ui/separator";
 
 const Login = () => {
-  const { login, register } = useAuth();
+  const { login, register, loginWithGithub, loginWithLinkedin } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const [socialLoading, setSocialLoading] = useState<string | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
   
@@ -74,6 +76,70 @@ const Login = () => {
       setIsLoading(false);
     }
   };
+
+  const handleGithubLogin = async () => {
+    try {
+      setSocialLoading("github");
+      await loginWithGithub();
+      navigate("/onboarding");
+    } catch (error) {
+      console.error("Github login error:", error);
+    } finally {
+      setSocialLoading(null);
+    }
+  };
+
+  const handleLinkedInLogin = async () => {
+    try {
+      setSocialLoading("linkedin");
+      await loginWithLinkedin();
+      navigate("/onboarding");
+    } catch (error) {
+      console.error("LinkedIn login error:", error);
+    } finally {
+      setSocialLoading(null);
+    }
+  };
+  
+  const SocialLoginButtons = () => (
+    <div className="space-y-4 mt-4">
+      <Separator>
+        <span className="px-2 text-muted-foreground text-xs">OR CONTINUE WITH</span>
+      </Separator>
+      
+      <div className="grid grid-cols-2 gap-3">
+        <Button 
+          variant="outline" 
+          type="button" 
+          onClick={handleGithubLogin}
+          disabled={isLoading || socialLoading !== null}
+          className="w-full"
+        >
+          {socialLoading === "github" ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <Github className="mr-2 h-4 w-4" />
+          )}
+          GitHub
+        </Button>
+        
+        <Button 
+          variant="outline" 
+          type="button" 
+          onClick={handleLinkedInLogin}
+          disabled={isLoading || socialLoading !== null}
+          className="w-full"
+        >
+          {socialLoading === "linkedin" ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <Linkedin className="mr-2 h-4 w-4" />
+          )}
+          LinkedIn
+        </Button>
+      </div>
+    </div>
+  );
   
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-b from-blue-50 to-teal-50">
@@ -150,9 +216,11 @@ const Login = () => {
                       onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
                     />
                   </div>
+                  
+                  <SocialLoginButtons />
                 </CardContent>
                 <CardFooter>
-                  <Button className="w-full" type="submit" disabled={isLoading}>
+                  <Button className="w-full" type="submit" disabled={isLoading || socialLoading !== null}>
                     {isLoading ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -228,9 +296,11 @@ const Login = () => {
                       onChange={(e) => setRegisterData({ ...registerData, confirmPassword: e.target.value })}
                     />
                   </div>
+                  
+                  <SocialLoginButtons />
                 </CardContent>
                 <CardFooter>
-                  <Button className="w-full" type="submit" disabled={isLoading}>
+                  <Button className="w-full" type="submit" disabled={isLoading || socialLoading !== null}>
                     {isLoading ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
