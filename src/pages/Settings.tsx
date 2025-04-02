@@ -1,3 +1,4 @@
+
 import AppLayout from "@/components/AppLayout";
 import { 
   Card, 
@@ -12,18 +13,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Bell, 
   Moon, 
-  Smartphone, 
   Lock, 
-  Globe, 
-  Volume2, 
-  HelpCircle,
   User,
-  Mail,
   Camera,
   BookOpen,
-  Award,
-  Flame,
-  Star
+  Loader2
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useState, useEffect } from "react";
@@ -37,7 +31,6 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Loader2 } from "lucide-react";
 
 // Form validation schema for profile
 const profileFormSchema = z.object({
@@ -115,13 +108,6 @@ const Settings = () => {
     historySaving: true
   });
   
-  // App settings
-  const [appSettings, setAppSettings] = useState({
-    downloadOverWifi: true,
-    offlineMode: false,
-    autoPlay: true
-  });
-  
   const handleNotificationChange = (key: keyof typeof notificationSettings) => {
     setNotificationSettings({
       ...notificationSettings,
@@ -143,18 +129,6 @@ const Settings = () => {
     toast({
       title: "Privacy setting updated",
       description: `${key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')} ${!privacySettings[key] ? 'enabled' : 'disabled'}.`,
-    });
-  };
-  
-  const handleAppSettingChange = (key: keyof typeof appSettings) => {
-    setAppSettings({
-      ...appSettings,
-      [key]: !appSettings[key]
-    });
-    
-    toast({
-      title: "App setting updated",
-      description: `${key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')} ${!appSettings[key] ? 'enabled' : 'disabled'}.`,
     });
   };
   
@@ -218,8 +192,6 @@ const Settings = () => {
             <TabsTrigger value="notifications">Notifications</TabsTrigger>
             <TabsTrigger value="appearance">Appearance</TabsTrigger>
             <TabsTrigger value="privacy">Privacy</TabsTrigger>
-            <TabsTrigger value="app">App Settings</TabsTrigger>
-            <TabsTrigger value="help">Help & Support</TabsTrigger>
           </TabsList>
           
           <TabsContent value="profile">
@@ -651,143 +623,6 @@ const Settings = () => {
                       checked={privacySettings.historySaving}
                       onCheckedChange={() => handlePrivacyChange('historySaving')}
                     />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="app">
-            <Card>
-              <CardHeader>
-                <div className="flex items-center gap-2">
-                  <Smartphone className="h-5 w-5 text-primary" />
-                  <CardTitle>App Settings</CardTitle>
-                </div>
-                <CardDescription>
-                  Configure how the app works on your device
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label htmlFor="download-wifi">Download Over Wi-Fi Only</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Only download content when connected to Wi-Fi
-                      </p>
-                    </div>
-                    <Switch
-                      id="download-wifi"
-                      checked={appSettings.downloadOverWifi}
-                      onCheckedChange={() => handleAppSettingChange('downloadOverWifi')}
-                    />
-                  </div>
-                  
-                  <Separator />
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label htmlFor="offline-mode">Offline Mode</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Access previously downloaded content without an internet connection
-                      </p>
-                    </div>
-                    <Switch
-                      id="offline-mode"
-                      checked={appSettings.offlineMode}
-                      onCheckedChange={() => handleAppSettingChange('offlineMode')}
-                    />
-                  </div>
-                  
-                  <Separator />
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label htmlFor="auto-play">Auto-Play Next Lesson</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Automatically start the next lesson when the current one finishes
-                      </p>
-                    </div>
-                    <Switch
-                      id="auto-play"
-                      checked={appSettings.autoPlay}
-                      onCheckedChange={() => handleAppSettingChange('autoPlay')}
-                    />
-                  </div>
-                  
-                  <Separator />
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label htmlFor="language">App Language</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Choose the language for the app interface
-                      </p>
-                    </div>
-                    <select 
-                      id="language" 
-                      className="rounded-md border border-input bg-background px-3 py-1 text-sm"
-                      defaultValue="en"
-                    >
-                      <option value="en">English</option>
-                      <option value="es">Español</option>
-                      <option value="fr">Français</option>
-                      <option value="de">Deutsch</option>
-                      <option value="ja">日本語</option>
-                    </select>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="help">
-            <Card>
-              <CardHeader>
-                <div className="flex items-center gap-2">
-                  <HelpCircle className="h-5 w-5 text-primary" />
-                  <CardTitle>Help & Support</CardTitle>
-                </div>
-                <CardDescription>
-                  Get help and learn more about using the app
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-4">
-                  <div className="p-4 bg-muted rounded-lg">
-                    <h3 className="text-lg font-medium mb-2">FAQ</h3>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      Find answers to commonly asked questions about the app
-                    </p>
-                    <a href="#" className="text-primary hover:underline text-sm">View FAQ</a>
-                  </div>
-                  
-                  <div className="p-4 bg-muted rounded-lg">
-                    <h3 className="text-lg font-medium mb-2">Contact Support</h3>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      Need help? Reach out to our support team
-                    </p>
-                    <a href="#" className="text-primary hover:underline text-sm">Contact Support</a>
-                  </div>
-                  
-                  <div className="p-4 bg-muted rounded-lg">
-                    <h3 className="text-lg font-medium mb-2">Tutorials</h3>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      Learn how to make the most of the app's features
-                    </p>
-                    <a href="#" className="text-primary hover:underline text-sm">View Tutorials</a>
-                  </div>
-                  
-                  <div className="p-4 bg-muted rounded-lg">
-                    <h3 className="text-lg font-medium mb-2">Privacy Policy</h3>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      Read our privacy policy and terms of service
-                    </p>
-                    <div className="flex gap-4">
-                      <a href="#" className="text-primary hover:underline text-sm">Privacy Policy</a>
-                      <a href="#" className="text-primary hover:underline text-sm">Terms of Service</a>
-                    </div>
                   </div>
                 </div>
               </CardContent>
