@@ -1,4 +1,4 @@
-import { User } from "@/contexts/AuthContext";
+import type { User } from "@/contexts/AuthContext";
 
 export type ContentFormat = "audio" | "interactive" | "text";
 export type LearningLevel = "beginner" | "intermediate" | "advanced";

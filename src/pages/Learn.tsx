@@ -1,4 +1,3 @@
-
 import AppLayout from "@/components/AppLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,9 +20,9 @@ import {
   getAllCourses, 
   getRecommendedPath,
   LearningCourse,
-  ContentFormat,
-  LearningPathCard
+  ContentFormat
 } from "@/utils/learningPathUtils";
+import { LearningPathCard } from "@/components/LearningPathCard";
 
 const Learn = () => {
   const { user } = useAuth();
@@ -32,10 +31,8 @@ const Learn = () => {
   const [filteredCourses, setFilteredCourses] = useState<LearningCourse[]>([]);
   const [formatFilter, setFormatFilter] = useState<ContentFormat | "all">("all");
   
-  // Get the recommended path
   const recommendedPath = getRecommendedPath(user);
   
-  // Initialize with all courses
   useEffect(() => {
     const courses = getAllCourses();
     setAllCourses(courses);
@@ -48,7 +45,6 @@ const Learn = () => {
     
     let filtered = allCourses;
     
-    // Apply search query filter
     if (query) {
       filtered = filtered.filter(
         course => 
@@ -58,7 +54,6 @@ const Learn = () => {
       );
     }
     
-    // Apply format filter
     if (formatFilter !== "all") {
       filtered = filtered.filter(course => course.format === formatFilter);
     }
@@ -68,7 +63,6 @@ const Learn = () => {
   
   const filterByCategory = (category: string) => {
     if (category === "all") {
-      // Apply only format filter if active
       if (formatFilter !== "all") {
         setFilteredCourses(allCourses.filter(course => course.format === formatFilter));
       } else {
@@ -79,7 +73,6 @@ const Learn = () => {
         course => course.category.toLowerCase() === category.toLowerCase()
       );
       
-      // Apply format filter if active
       if (formatFilter !== "all") {
         filtered = filtered.filter(course => course.format === formatFilter);
       }
