@@ -14,7 +14,7 @@ import Login from "./pages/Login";
 import Onboarding from "./pages/Onboarding";
 import Dashboard from "./pages/Dashboard";
 import Learn from "./pages/Learn";
-import Profile from "./pages/Profile";
+import Progress from "./pages/Progress";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
@@ -63,10 +63,10 @@ const App = () => {
                 } 
               />
               <Route 
-                path="/profile" 
+                path="/progress" 
                 element={
                   <ProtectedRoute>
-                    <Profile />
+                    <Progress />
                   </ProtectedRoute>
                 } 
               />

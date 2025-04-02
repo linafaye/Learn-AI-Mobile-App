@@ -6,7 +6,7 @@ import {
   Home, 
   BookOpen, 
   Settings, 
-  User, 
+  Award, 
   LogOut,
   Menu,
   X
@@ -33,7 +33,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, showNav = true }) => {
   const navigation = [
     { name: "Home", href: "/dashboard", icon: Home },
     { name: "Learn", href: "/learn", icon: BookOpen },
-    { name: "Profile", href: "/profile", icon: User },
+    { name: "Progress", href: "/progress", icon: Award },
     { name: "Settings", href: "/settings", icon: Settings },
   ];
 

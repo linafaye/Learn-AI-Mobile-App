@@ -1,5 +1,5 @@
 
-import { Home, BookOpen, User, Settings } from "lucide-react";
+import { Home, BookOpen, Award, Settings } from "lucide-react";
 import { useLocation, Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
@@ -9,7 +9,7 @@ const MobileNavBar = () => {
   const navItems = [
     { name: "Home", icon: Home, path: "/dashboard" },
     { name: "Learn", icon: BookOpen, path: "/learn" },
-    { name: "Profile", icon: User, path: "/profile" },
+    { name: "Progress", icon: Award, path: "/progress" },
     { name: "Settings", icon: Settings, path: "/settings" }
   ];
 
