@@ -4,7 +4,6 @@ import { Card } from "@/components/ui/card";
 import { 
   Headphones,
   MousePointer,
-  Video,
 } from "lucide-react";
 import { LearningCourse } from "@/utils/learningPathUtils";
 import { useAuth } from "@/contexts/AuthContext";
@@ -24,7 +23,6 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
   const getFormatIcon = () => {
     switch(course.format) {
       case "audio": return Headphones;
-      case "video": return Video;
       default: return MousePointer;
     }
   };
@@ -58,14 +56,6 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
       addCourseToQueue(course.id);
     }
   };
-
-  // Function to extract YouTube video ID from URL
-  const getYoutubeVideoId = (url: string) => {
-    if (!url) return null;
-    const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-    const match = url.match(regExp);
-    return (match && match[7].length === 11) ? match[7] : null;
-  };
   
   useEffect(() => {
     if (course.format === "audio" && course.audioUrl) {
@@ -86,35 +76,11 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
     <>
       <Card className="overflow-hidden flex flex-col hover:shadow-md transition-shadow">
         <div className="aspect-video bg-muted flex items-center justify-center p-6">
-          {course.format === "video" && course.videoUrl ? (
-            <div className="w-full h-full flex items-center justify-center relative">
-              {course.videoUrl.includes("youtube") || course.videoUrl.includes("youtu.be") ? (
-                <iframe 
-                  src={`https://www.youtube.com/embed/${getYoutubeVideoId(course.videoUrl)}`}
-                  className="w-full h-full border-0"
-                  allowFullScreen
-                  title={course.title}
-                ></iframe>
-              ) : (
-                <>
-                  <img 
-                    src={course.image} 
-                    alt={course.title}
-                    className="w-full h-full object-cover opacity-60"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Video className="w-12 h-12 text-primary opacity-90" />
-                  </div>
-                </>
-              )}
-            </div>
-          ) : (
-            <img 
-              src={course.image} 
-              alt={course.title}
-              className="w-20 h-20 object-contain"
-            />
-          )}
+          <img 
+            src={course.image} 
+            alt={course.title}
+            className="w-20 h-20 object-contain"
+          />
         </div>
         <div className="p-4 flex flex-col flex-1">
           <div className="flex justify-between items-start mb-2">

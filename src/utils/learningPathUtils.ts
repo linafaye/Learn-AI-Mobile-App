@@ -6,7 +6,7 @@ import {
   LearningExperience 
 } from "@/contexts/AuthContext";
 
-export type ContentFormat = "audio" | "interactive" | "text" | "video";
+export type ContentFormat = "audio" | "interactive" | "text";
 export type LearningLevel = "beginner" | "intermediate" | "advanced";
 
 export interface LearningPath {
@@ -30,7 +30,6 @@ export interface LearningCourse {
   progress?: number;
   audioUrl?: string; // URL to audio file
   audioContent?: string; // Text content for audio narration
-  videoUrl?: string; // URL to video file
 }
 
 const allCourses: LearningCourse[] = [
@@ -235,126 +234,6 @@ const allCourses: LearningCourse[] = [
     However, implementing AI in business requires careful consideration of data quality, integration with existing systems, talent acquisition, and ethical implications. Organizations must develop clear strategies that align AI initiatives with business objectives.
     
     As we proceed, we'll explore specific case studies of successful AI implementation in various industries and discuss best practices for leveraging AI in business contexts.`
-  },
-  {
-    id: "9",
-    title: "Introduction to Generative AI: The Future is Here",
-    description: "Learn about the exciting world of generative AI and its capabilities",
-    category: "Generative AI",
-    level: "beginner",
-    format: "video",
-    duration: 15,
-    progress: 0,
-    image: "https://cdn-icons-png.flaticon.com/512/2103/2103652.png",
-    videoUrl: "https://www.youtube.com/watch?v=LPqr-eBF8o8"
-  },
-  {
-    id: "10",
-    title: "Generative AI Concepts: Foundation Models Explained",
-    description: "Understand the foundation models that power generative AI applications",
-    category: "Generative AI",
-    level: "intermediate",
-    format: "video",
-    duration: 12,
-    progress: 0,
-    image: "https://cdn-icons-png.flaticon.com/512/2103/2103674.png",
-    videoUrl: "https://www.youtube.com/watch?v=beJe7rpmYEg"
-  },
-  {
-    id: "11",
-    title: "Prompt Design: How to Talk to AI",
-    description: "Master the art of prompt engineering to get better results from AI models",
-    category: "AI Development",
-    level: "beginner",
-    format: "video",
-    duration: 13,
-    progress: 0,
-    image: "https://cdn-icons-png.flaticon.com/512/2103/2103666.png",
-    videoUrl: "https://www.youtube.com/watch?v=5JpPo-NOq8s"
-  },
-  {
-    id: "12",
-    title: "Introduction to PaLM API",
-    description: "Learn about Google's PaLM API and how to use it in your applications",
-    category: "AI Development",
-    level: "intermediate",
-    format: "video",
-    duration: 10,
-    progress: 0,
-    image: "https://cdn-icons-png.flaticon.com/512/2103/2103611.png",
-    videoUrl: "https://www.youtube.com/watch?v=hPb6XdkryR0"
-  },
-  {
-    id: "13",
-    title: "Responsible AI: A Framework for Developers",
-    description: "Explore frameworks for developing and deploying AI responsibly",
-    category: "Ethics",
-    level: "intermediate",
-    format: "video",
-    duration: 11,
-    progress: 0,
-    image: "https://cdn-icons-png.flaticon.com/512/2103/2103618.png",
-    videoUrl: "https://www.youtube.com/watch?v=3-xhIMCHBbU"
-  },
-  {
-    id: "14",
-    title: "Generative AI for Developers",
-    description: "Learn how to build generative AI applications as a developer",
-    category: "AI Development",
-    level: "advanced",
-    format: "video",
-    duration: 14,
-    progress: 0,
-    image: "https://cdn-icons-png.flaticon.com/512/2103/2103633.png",
-    videoUrl: "https://www.youtube.com/watch?v=gT4qqHMiEpA"
-  },
-  {
-    id: "15",
-    title: "Introduction to Vertex AI",
-    description: "Get started with Google's Vertex AI platform for machine learning",
-    category: "AI Development",
-    level: "intermediate",
-    format: "video",
-    duration: 9,
-    progress: 0,
-    image: "https://cdn-icons-png.flaticon.com/512/2103/2103658.png",
-    videoUrl: "https://www.youtube.com/watch?v=gT4qqHMiEpA"
-  },
-  {
-    id: "16",
-    title: "Text Generation with Vertex AI and PaLM 2",
-    description: "Learn how to generate text using Vertex AI and the PaLM 2 model",
-    category: "AI Development",
-    level: "advanced",
-    format: "video",
-    duration: 12,
-    progress: 0,
-    image: "https://cdn-icons-png.flaticon.com/512/2103/2103650.png",
-    videoUrl: "https://www.youtube.com/watch?v=kCc7lhhTq8A"
-  },
-  {
-    id: "17",
-    title: "Vertex AI Model Garden",
-    description: "Explore Google's Model Garden for pre-trained and foundation models",
-    category: "AI Development",
-    level: "intermediate",
-    format: "video",
-    duration: 11,
-    progress: 0,
-    image: "https://cdn-icons-png.flaticon.com/512/2103/2103658.png",
-    videoUrl: "https://www.youtube.com/watch?v=OBsua_xYX58"
-  },
-  {
-    id: "18",
-    title: "Leveraging LLMs for Task Automation",
-    description: "Use large language models to automate tasks and improve productivity",
-    category: "AI Applications",
-    level: "intermediate",
-    format: "video",
-    duration: 13,
-    progress: 0,
-    image: "https://cdn-icons-png.flaticon.com/512/2103/2103611.png",
-    videoUrl: "https://www.youtube.com/watch?v=fvwOKwCCiDY"
   }
 ];
 
