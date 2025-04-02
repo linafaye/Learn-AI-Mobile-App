@@ -246,7 +246,7 @@ const allCourses: LearningCourse[] = [
     duration: 20,
     progress: 0,
     image: "https://cdn-icons-png.flaticon.com/512/2103/2103674.png",
-    videoUrl: "https://storage.googleapis.com/aicontent/samples/computer_vision_deep_learning.mp4"
+    videoUrl: "https://www.youtube.com/watch?v=ad79nYk2keg"
   },
   {
     id: 10,
@@ -258,7 +258,43 @@ const allCourses: LearningCourse[] = [
     duration: 25,
     progress: 0,
     image: "https://cdn-icons-png.flaticon.com/512/2103/2103666.png",
-    videoUrl: "https://storage.googleapis.com/aicontent/samples/nlp_applications.mp4"
+    videoUrl: "https://www.youtube.com/watch?v=TdfTsQD5z3s"
+  },
+  {
+    id: 11,
+    title: "AI Career Guide",
+    description: "Learn about various career paths in AI and how to prepare for them",
+    category: "Career",
+    level: "beginner",
+    format: "video",
+    duration: 18,
+    progress: 0,
+    image: "https://cdn-icons-png.flaticon.com/512/2103/2103611.png",
+    videoUrl: "https://www.youtube.com/watch?v=2gPqU_CV9ZY"
+  },
+  {
+    id: 12,
+    title: "Introduction to Generative AI",
+    description: "Learn the fundamentals of generative AI models and their applications",
+    category: "Fundamentals",
+    level: "intermediate",
+    format: "video",
+    duration: 15,
+    progress: 0,
+    image: "https://cdn-icons-png.flaticon.com/512/2103/2103652.png",
+    videoUrl: "https://www.youtube.com/watch?v=hfIUstzHs9A"
+  },
+  {
+    id: 13,
+    title: "AI Ethics and Governance",
+    description: "Understanding the ethical implications and governance frameworks for AI",
+    category: "Ethics",
+    level: "intermediate",
+    format: "video",
+    duration: 22,
+    progress: 0,
+    image: "https://cdn-icons-png.flaticon.com/512/2103/2103618.png",
+    videoUrl: "https://www.youtube.com/watch?v=dvzAm-g4yBM"
   }
 ];
 
