@@ -17,6 +17,7 @@ import Learn from "./pages/Learn";
 import Progress from "./pages/Progress";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import CourseDetailPage from "./components/CourseDetailPage";
 
 const queryClient = new QueryClient();
 
@@ -59,6 +60,14 @@ const App = () => {
                 element={
                   <ProtectedRoute>
                     <Learn />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/course/:courseId" 
+                element={
+                  <ProtectedRoute>
+                    <CourseDetailPage />
                   </ProtectedRoute>
                 } 
               />

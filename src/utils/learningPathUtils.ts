@@ -30,6 +30,7 @@ export interface LearningCourse {
   progress?: number;
   audioUrl?: string; // URL to audio file
   audioContent?: string; // Text content for audio narration
+  videoUrl?: string; // URL to video file
 }
 
 const allCourses: LearningCourse[] = [
@@ -234,6 +235,19 @@ const allCourses: LearningCourse[] = [
     However, implementing AI in business requires careful consideration of data quality, integration with existing systems, talent acquisition, and ethical implications. Organizations must develop clear strategies that align AI initiatives with business objectives.
     
     As we proceed, we'll explore specific case studies of successful AI implementation in various industries and discuss best practices for leveraging AI in business contexts.`
+  },
+  {
+    id: "9",
+    title: "Advanced Machine Learning Techniques",
+    description: "Deep dive into sophisticated machine learning methodologies and applications",
+    category: "Machine Learning",
+    level: "advanced",
+    format: "video",
+    duration: 30,
+    progress: 0,
+    image: "https://cdn-icons-png.flaticon.com/512/2103/2103633.png",
+    videoUrl: "https://www.youtube.com/watch?v=HgBpFaATdoA&list=PLEiEAq2VkUULYYgj13YHUWmRePqiu8Ddy&index=4",
+    audioContent: `This advanced course explores cutting-edge machine learning techniques that are pushing the boundaries of what's possible with AI. We'll dive deep into advanced algorithms, model architectures, and practical applications.`
   }
 ];
 

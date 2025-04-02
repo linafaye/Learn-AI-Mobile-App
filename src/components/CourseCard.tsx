@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { 
@@ -14,12 +13,16 @@ import CourseActionButton from "./CourseActionButton";
 import CourseAudioControls from "./CourseAudioControls";
 import CourseAudioDialog from "./CourseAudioDialog";
 import CourseBookmarkButton from "./CourseBookmarkButton";
+import CourseVideoPlayer from "./CourseVideoPlayer";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 interface CourseCardProps {
   course: LearningCourse;
 }
 
 const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
+  const navigate = useNavigate();
   const { addCourseToQueue, removeCourseFromQueue, isInQueue } = useAuth();
   const getFormatIcon = () => {
     switch(course.format) {
@@ -31,6 +34,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
   const FormatIcon = getFormatIcon();
   const [isPlaying, setIsPlaying] = useState(false);
   const [showAudioContent, setShowAudioContent] = useState(false);
+  const [showVideoContent, setShowVideoContent] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   
   const inQueue = isInQueue(course.id);
@@ -49,6 +53,14 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
   
   const handleAudioContentView = () => {
     setShowAudioContent(true);
+  };
+
+  const handleVideoContentView = () => {
+    if (course.format === "video" && course.videoUrl) {
+      navigate(`/course/${course.id}`);
+    } else {
+      setShowVideoContent(!showVideoContent);
+    }
   };
   
   const handleQueueToggle = () => {
@@ -77,12 +89,19 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
   return (
     <>
       <Card className="overflow-hidden flex flex-col hover:shadow-md transition-shadow">
-        <div className="aspect-video bg-muted flex items-center justify-center p-6">
-          <img 
-            src={course.image} 
-            alt={course.title}
-            className="w-20 h-20 object-contain"
-          />
+        <div 
+          className="aspect-video bg-muted flex items-center justify-center p-6 cursor-pointer"
+          onClick={course.format === "video" ? handleVideoContentView : undefined}
+        >
+          {course.videoUrl && showVideoContent ? (
+            <CourseVideoPlayer videoUrl={course.videoUrl} title={course.title} />
+          ) : (
+            <img 
+              src={course.image} 
+              alt={course.title}
+              className="w-20 h-20 object-contain"
+            />
+          )}
         </div>
         <div className="p-4 flex flex-col flex-1">
           <div className="flex justify-between items-start mb-2">
@@ -127,6 +146,18 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
                   onViewContent={handleAudioContentView}
                 />
                 
+                <CourseActionButton progress={course.progress || 0} courseTitle={course.title} />
+              </div>
+            ) : course.format === "video" && course.videoUrl ? (
+              <div className="flex gap-2">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={handleVideoContentView}
+                  className="flex-1"
+                >
+                  Watch Video
+                </Button>
                 <CourseActionButton progress={course.progress || 0} courseTitle={course.title} />
               </div>
             ) : (
