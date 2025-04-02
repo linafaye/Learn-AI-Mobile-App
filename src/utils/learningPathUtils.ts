@@ -19,7 +19,7 @@ export interface LearningPath {
 }
 
 export interface LearningCourse {
-  id: number;
+  id: string;
   title: string;
   description: string;
   duration: number; // in minutes
@@ -35,7 +35,7 @@ export interface LearningCourse {
 
 const allCourses: LearningCourse[] = [
   {
-    id: 1,
+    id: "1",
     title: "Introduction to AI Concepts",
     description: "Learn the fundamentals of artificial intelligence and how it's transforming industries",
     category: "Fundamentals",
@@ -58,7 +58,7 @@ const allCourses: LearningCourse[] = [
     As we continue to advance AI technologies, responsible innovation will be key to maximizing benefits while minimizing potential risks.`
   },
   {
-    id: 2,
+    id: "2",
     title: "Machine Learning Basics",
     description: "Understand the core principles behind machine learning models",
     category: "Machine Learning",
@@ -84,7 +84,7 @@ const allCourses: LearningCourse[] = [
     As we move forward, we'll explore these concepts in greater depth and learn how to implement them in real-world scenarios.`
   },
   {
-    id: 3,
+    id: "3",
     title: "Neural Networks 101",
     description: "Interactive introduction to neural networks with visual examples",
     category: "Deep Learning",
@@ -108,7 +108,7 @@ const allCourses: LearningCourse[] = [
     Neural networks have enabled breakthroughs in computer vision, natural language processing, speech recognition, and many other fields, fundamentally changing how we approach complex problems in computing.`
   },
   {
-    id: 4,
+    id: "4",
     title: "Ethical AI and Responsible Development",
     description: "Learn about ethical considerations in AI development",
     category: "Ethics",
@@ -133,7 +133,7 @@ const allCourses: LearningCourse[] = [
     Responsible AI development requires diverse teams, rigorous testing, ongoing monitoring, and clear guidelines for intervention when systems don't perform as intended. By prioritizing ethics from the start, we can harness AI's potential while minimizing harm.`
   },
   {
-    id: 5,
+    id: "5",
     title: "Natural Language Processing",
     description: "Explore how AI understands and processes human language",
     category: "NLP",
@@ -157,7 +157,7 @@ const allCourses: LearningCourse[] = [
     As we move forward, we'll explore specific NLP techniques and how they're applied in real-world scenarios.`
   },
   {
-    id: 6,
+    id: "6",
     title: "Computer Vision Fundamentals",
     description: "Audio walkthrough of how AI sees and interprets visual information",
     category: "Computer Vision",
@@ -184,7 +184,7 @@ const allCourses: LearningCourse[] = [
     As we proceed, we'll delve deeper into specific computer vision techniques and their real-world applications.`
   },
   {
-    id: 7,
+    id: "7",
     title: "Reinforcement Learning",
     description: "Interactive examples of how AI learns through trial and error",
     category: "Machine Learning",
@@ -210,7 +210,7 @@ const allCourses: LearningCourse[] = [
     As we continue, we'll explore how reinforcement learning is applied to solve complex real-world problems.`
   },
   {
-    id: 8,
+    id: "8",
     title: "AI for Business Decision Making",
     description: "Learn how businesses implement AI for better outcomes",
     category: "Business",
@@ -237,64 +237,124 @@ const allCourses: LearningCourse[] = [
     As we proceed, we'll explore specific case studies of successful AI implementation in various industries and discuss best practices for leveraging AI in business contexts.`
   },
   {
-    id: 9,
-    title: "Computer Vision with Deep Learning",
-    description: "A video tutorial on implementing advanced computer vision techniques with deep learning",
-    category: "Deep Learning",
-    level: "advanced",
-    format: "video",
-    duration: 20,
-    progress: 0,
-    image: "https://cdn-icons-png.flaticon.com/512/2103/2103674.png",
-    videoUrl: "https://www.youtube.com/watch?v=ad79nYk2keg"
-  },
-  {
-    id: 10,
-    title: "Practical NLP Applications",
-    description: "Video course on building practical NLP applications in various domains",
-    category: "NLP",
-    level: "intermediate",
-    format: "video",
-    duration: 25,
-    progress: 0,
-    image: "https://cdn-icons-png.flaticon.com/512/2103/2103666.png",
-    videoUrl: "https://www.youtube.com/watch?v=TdfTsQD5z3s"
-  },
-  {
-    id: 11,
-    title: "AI Career Guide",
-    description: "Learn about various career paths in AI and how to prepare for them",
-    category: "Career",
+    id: "9",
+    title: "Introduction to Generative AI: The Future is Here",
+    description: "Learn about the exciting world of generative AI and its capabilities",
+    category: "Generative AI",
     level: "beginner",
-    format: "video",
-    duration: 18,
-    progress: 0,
-    image: "https://cdn-icons-png.flaticon.com/512/2103/2103611.png",
-    videoUrl: "https://www.youtube.com/watch?v=2gPqU_CV9ZY"
-  },
-  {
-    id: 12,
-    title: "Introduction to Generative AI",
-    description: "Learn the fundamentals of generative AI models and their applications",
-    category: "Fundamentals",
-    level: "intermediate",
     format: "video",
     duration: 15,
     progress: 0,
     image: "https://cdn-icons-png.flaticon.com/512/2103/2103652.png",
-    videoUrl: "https://www.youtube.com/watch?v=hfIUstzHs9A"
+    videoUrl: "https://www.youtube.com/watch?v=LPqr-eBF8o8"
   },
   {
-    id: 13,
-    title: "AI Ethics and Governance",
-    description: "Understanding the ethical implications and governance frameworks for AI",
+    id: "10",
+    title: "Generative AI Concepts: Foundation Models Explained",
+    description: "Understand the foundation models that power generative AI applications",
+    category: "Generative AI",
+    level: "intermediate",
+    format: "video",
+    duration: 12,
+    progress: 0,
+    image: "https://cdn-icons-png.flaticon.com/512/2103/2103674.png",
+    videoUrl: "https://www.youtube.com/watch?v=beJe7rpmYEg"
+  },
+  {
+    id: "11",
+    title: "Prompt Design: How to Talk to AI",
+    description: "Master the art of prompt engineering to get better results from AI models",
+    category: "AI Development",
+    level: "beginner",
+    format: "video",
+    duration: 13,
+    progress: 0,
+    image: "https://cdn-icons-png.flaticon.com/512/2103/2103666.png",
+    videoUrl: "https://www.youtube.com/watch?v=5JpPo-NOq8s"
+  },
+  {
+    id: "12",
+    title: "Introduction to PaLM API",
+    description: "Learn about Google's PaLM API and how to use it in your applications",
+    category: "AI Development",
+    level: "intermediate",
+    format: "video",
+    duration: 10,
+    progress: 0,
+    image: "https://cdn-icons-png.flaticon.com/512/2103/2103611.png",
+    videoUrl: "https://www.youtube.com/watch?v=hPb6XdkryR0"
+  },
+  {
+    id: "13",
+    title: "Responsible AI: A Framework for Developers",
+    description: "Explore frameworks for developing and deploying AI responsibly",
     category: "Ethics",
     level: "intermediate",
     format: "video",
-    duration: 22,
+    duration: 11,
     progress: 0,
     image: "https://cdn-icons-png.flaticon.com/512/2103/2103618.png",
-    videoUrl: "https://www.youtube.com/watch?v=dvzAm-g4yBM"
+    videoUrl: "https://www.youtube.com/watch?v=3-xhIMCHBbU"
+  },
+  {
+    id: "14",
+    title: "Generative AI for Developers",
+    description: "Learn how to build generative AI applications as a developer",
+    category: "AI Development",
+    level: "advanced",
+    format: "video",
+    duration: 14,
+    progress: 0,
+    image: "https://cdn-icons-png.flaticon.com/512/2103/2103633.png",
+    videoUrl: "https://www.youtube.com/watch?v=gT4qqHMiEpA"
+  },
+  {
+    id: "15",
+    title: "Introduction to Vertex AI",
+    description: "Get started with Google's Vertex AI platform for machine learning",
+    category: "AI Development",
+    level: "intermediate",
+    format: "video",
+    duration: 9,
+    progress: 0,
+    image: "https://cdn-icons-png.flaticon.com/512/2103/2103658.png",
+    videoUrl: "https://www.youtube.com/watch?v=gT4qqHMiEpA"
+  },
+  {
+    id: "16",
+    title: "Text Generation with Vertex AI and PaLM 2",
+    description: "Learn how to generate text using Vertex AI and the PaLM 2 model",
+    category: "AI Development",
+    level: "advanced",
+    format: "video",
+    duration: 12,
+    progress: 0,
+    image: "https://cdn-icons-png.flaticon.com/512/2103/2103650.png",
+    videoUrl: "https://www.youtube.com/watch?v=kCc7lhhTq8A"
+  },
+  {
+    id: "17",
+    title: "Vertex AI Model Garden",
+    description: "Explore Google's Model Garden for pre-trained and foundation models",
+    category: "AI Development",
+    level: "intermediate",
+    format: "video",
+    duration: 11,
+    progress: 0,
+    image: "https://cdn-icons-png.flaticon.com/512/2103/2103658.png",
+    videoUrl: "https://www.youtube.com/watch?v=OBsua_xYX58"
+  },
+  {
+    id: "18",
+    title: "Leveraging LLMs for Task Automation",
+    description: "Use large language models to automate tasks and improve productivity",
+    category: "AI Applications",
+    level: "intermediate",
+    format: "video",
+    duration: 13,
+    progress: 0,
+    image: "https://cdn-icons-png.flaticon.com/512/2103/2103611.png",
+    videoUrl: "https://www.youtube.com/watch?v=fvwOKwCCiDY"
   }
 ];
 
