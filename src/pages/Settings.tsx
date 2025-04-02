@@ -21,7 +21,10 @@ import {
   User,
   Mail,
   Camera,
-  BookOpen
+  BookOpen,
+  Award,
+  Flame,
+  Star
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useState, useEffect } from "react";
