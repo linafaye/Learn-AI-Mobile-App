@@ -28,6 +28,7 @@ export interface LearningCourse {
   category: string;
   image: string;
   progress?: number;
+  audioUrl?: string; // New field for audio courses
 }
 
 // Mock courses data with format types
@@ -41,7 +42,8 @@ const allCourses: LearningCourse[] = [
     format: "audio",
     duration: 15,
     progress: 45,
-    image: "https://cdn-icons-png.flaticon.com/512/2103/2103652.png"
+    image: "https://cdn-icons-png.flaticon.com/512/2103/2103652.png",
+    audioUrl: "https://storage.googleapis.com/aicontent/samples/ai_introduction.mp3"
   },
   {
     id: 2,
@@ -74,7 +76,8 @@ const allCourses: LearningCourse[] = [
     format: "audio",
     duration: 10,
     progress: 0,
-    image: "https://cdn-icons-png.flaticon.com/512/2103/2103618.png"
+    image: "https://cdn-icons-png.flaticon.com/512/2103/2103618.png",
+    audioUrl: "https://storage.googleapis.com/aicontent/samples/ethical_ai.mp3"
   },
   {
     id: 5,
@@ -96,7 +99,8 @@ const allCourses: LearningCourse[] = [
     format: "audio",
     duration: 15,
     progress: 0,
-    image: "https://cdn-icons-png.flaticon.com/512/2103/2103650.png"
+    image: "https://cdn-icons-png.flaticon.com/512/2103/2103650.png",
+    audioUrl: "https://storage.googleapis.com/aicontent/samples/computer_vision.mp3"
   },
   {
     id: 7,
@@ -118,7 +122,8 @@ const allCourses: LearningCourse[] = [
     format: "audio",
     duration: 10,
     progress: 0,
-    image: "https://cdn-icons-png.flaticon.com/512/2103/2103611.png"
+    image: "https://cdn-icons-png.flaticon.com/512/2103/2103611.png",
+    audioUrl: "https://storage.googleapis.com/aicontent/samples/ai_business.mp3"
   }
 ];
 

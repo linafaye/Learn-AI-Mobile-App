@@ -12,9 +12,11 @@ import {
   CheckCircle,
   Filter,
   Headphones,
-  MousePointer
+  MousePointer,
+  Volume2,
+  PauseCircle
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { 
   getAllCourses, 
@@ -216,6 +218,35 @@ interface CourseCardProps {
 
 const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
   const FormatIcon = course.format === "audio" ? Headphones : MousePointer;
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  
+  const handleAudioToggle = () => {
+    if (!audioRef.current || !course.audioUrl) return;
+    
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    
+    setIsPlaying(!isPlaying);
+  };
+  
+  useEffect(() => {
+    if (course.format === "audio" && course.audioUrl) {
+      audioRef.current = new Audio(course.audioUrl);
+      
+      audioRef.current.addEventListener("ended", () => setIsPlaying(false));
+      
+      return () => {
+        if (audioRef.current) {
+          audioRef.current.pause();
+          audioRef.current.removeEventListener("ended", () => setIsPlaying(false));
+        }
+      };
+    }
+  }, [course]);
   
   return (
     <Card className="overflow-hidden flex flex-col hover:shadow-md transition-shadow">
@@ -263,24 +294,65 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
         )}
         
         <div className="mt-auto">
-          <Button className="w-full" variant={course.progress !== undefined && course.progress > 0 ? "default" : "outline"}>
-            {course.progress !== undefined && course.progress > 0 ? (
-              <>
-                <PlayCircle className="mr-2 h-4 w-4" />
-                Continue
-              </>
-            ) : course.progress === 100 ? (
-              <>
-                <CheckCircle className="mr-2 h-4 w-4" />
-                Completed
-              </>
-            ) : (
-              <>
-                <BookOpen className="mr-2 h-4 w-4" />
-                Start Learning
-              </>
-            )}
-          </Button>
+          {course.format === "audio" && course.audioUrl ? (
+            <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                size="icon" 
+                onClick={handleAudioToggle}
+                className="flex-shrink-0"
+              >
+                {isPlaying ? (
+                  <PauseCircle className="h-4 w-4" />
+                ) : (
+                  <Volume2 className="h-4 w-4" />
+                )}
+              </Button>
+              <Button 
+                className="w-full" 
+                variant={course.progress !== undefined && course.progress > 0 ? "default" : "outline"}
+              >
+                {course.progress !== undefined && course.progress > 0 ? (
+                  <>
+                    <PlayCircle className="mr-2 h-4 w-4" />
+                    Continue
+                  </>
+                ) : course.progress === 100 ? (
+                  <>
+                    <CheckCircle className="mr-2 h-4 w-4" />
+                    Completed
+                  </>
+                ) : (
+                  <>
+                    <BookOpen className="mr-2 h-4 w-4" />
+                    Start Learning
+                  </>
+                )}
+              </Button>
+            </div>
+          ) : (
+            <Button 
+              className="w-full" 
+              variant={course.progress !== undefined && course.progress > 0 ? "default" : "outline"}
+            >
+              {course.progress !== undefined && course.progress > 0 ? (
+                <>
+                  <PlayCircle className="mr-2 h-4 w-4" />
+                  Continue
+                </>
+              ) : course.progress === 100 ? (
+                <>
+                  <CheckCircle className="mr-2 h-4 w-4" />
+                  Completed
+                </>
+              ) : (
+                <>
+                  <BookOpen className="mr-2 h-4 w-4" />
+                  Start Learning
+                </>
+              )}
+            </Button>
+          )}
         </div>
       </div>
     </Card>
