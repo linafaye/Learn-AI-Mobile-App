@@ -1,4 +1,3 @@
-
 import AppLayout from "@/components/AppLayout";
 import { 
   Card, 
@@ -216,7 +215,6 @@ const Settings = () => {
         <Tabs defaultValue="profile" className="space-y-8">
           <TabsList className="mb-4">
             <TabsTrigger value="profile">Profile</TabsTrigger>
-            <TabsTrigger value="progress">Progress</TabsTrigger>
             <TabsTrigger value="notifications">Notifications</TabsTrigger>
             <TabsTrigger value="appearance">Appearance</TabsTrigger>
             <TabsTrigger value="privacy">Privacy</TabsTrigger>
@@ -464,127 +462,6 @@ const Settings = () => {
                 </CardContent>
               </Card>
             </div>
-          </TabsContent>
-          
-          <TabsContent value="progress">
-            <Card>
-              <CardHeader>
-                <div className="flex items-center gap-2">
-                  <Award className="h-5 w-5 text-primary" />
-                  <CardTitle>Your Progress</CardTitle>
-                </div>
-                <CardDescription>
-                  Track your learning journey and achievements
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-8">
-                  <div>
-                    <h3 className="text-lg font-medium mb-4">Achievements</h3>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      {/* First Steps Badge */}
-                      <div className="flex flex-col items-center p-4 border rounded-lg bg-muted/50">
-                        <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-3">
-                          <Award className="h-8 w-8 text-primary" />
-                        </div>
-                        <span className="font-medium text-center">First Steps</span>
-                        <span className="text-xs text-muted-foreground">Complete your first lesson</span>
-                      </div>
-                      
-                      {/* Consistent Learner Badge */}
-                      <div className="flex flex-col items-center p-4 border rounded-lg bg-background">
-                        <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-3">
-                          <Award className="h-8 w-8 text-gray-400" />
-                        </div>
-                        <span className="font-medium text-center">Consistent Learner</span>
-                        <span className="text-xs text-muted-foreground">5 days in a row</span>
-                      </div>
-                      
-                      {/* Knowledge Seeker Badge */}
-                      <div className="flex flex-col items-center p-4 border rounded-lg bg-background">
-                        <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-3">
-                          <Award className="h-8 w-8 text-gray-400" />
-                        </div>
-                        <span className="font-medium text-center">Knowledge Seeker</span>
-                        <span className="text-xs text-muted-foreground">Complete 5 lessons</span>
-                      </div>
-                      
-                      {/* AI Master Badge */}
-                      <div className="flex flex-col items-center p-4 border rounded-lg bg-background">
-                        <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-3">
-                          <Award className="h-8 w-8 text-gray-400" />
-                        </div>
-                        <span className="font-medium text-center">AI Master</span>
-                        <span className="text-xs text-muted-foreground">Complete an AI course</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <Separator />
-                  
-                  <div>
-                    <h3 className="text-lg font-medium mb-4">Learning Streak</h3>
-                    <div className="bg-muted p-4 rounded-lg">
-                      <div className="flex items-center gap-4 mb-4">
-                        <div className="bg-primary/10 p-3 rounded-full">
-                          <Flame className="h-6 w-6 text-primary" />
-                        </div>
-                        <div>
-                          <p className="text-2xl font-bold">1 Day</p>
-                          <p className="text-sm text-muted-foreground">Current streak</p>
-                        </div>
-                        <div className="ml-auto">
-                          <p className="text-2xl font-bold">1 Day</p>
-                          <p className="text-sm text-muted-foreground">Best streak</p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex gap-1 mt-4">
-                        {Array.from({ length: 7 }).map((_, i) => (
-                          <div key={i} className={`flex-1 h-2 rounded-full ${i === 0 ? "bg-primary" : "bg-gray-200"}`} />
-                        ))}
-                      </div>
-                      <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                        <span>M</span>
-                        <span>T</span>
-                        <span>W</span>
-                        <span>T</span>
-                        <span>F</span>
-                        <span>S</span>
-                        <span>S</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <Separator />
-                  
-                  <div>
-                    <h3 className="text-lg font-medium mb-4">Experience Points</h3>
-                    <div className="bg-muted p-4 rounded-lg">
-                      <div className="flex items-center gap-4 mb-4">
-                        <div className="bg-primary/10 p-3 rounded-full">
-                          <Star className="h-6 w-6 text-primary" />
-                        </div>
-                        <div>
-                          <p className="text-2xl font-bold">120 XP</p>
-                          <p className="text-sm text-muted-foreground">Total earned</p>
-                        </div>
-                      </div>
-                      
-                      <div className="mt-4">
-                        <div className="flex justify-between mb-1">
-                          <span className="text-sm font-medium">Level 1</span>
-                          <span className="text-sm text-muted-foreground">120/500 XP</span>
-                        </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2.5">
-                          <div className="bg-primary h-2.5 rounded-full" style={{ width: "24%" }}></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </TabsContent>
           
           <TabsContent value="notifications">
