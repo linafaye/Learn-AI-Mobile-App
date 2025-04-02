@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useAuth, CustomerRole, LearningGoal, TargetTime, WeeklyFrequency, LearningExperience } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +14,6 @@ const Onboarding = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   
-  // Get from user if available
   const [customerRole, setCustomerRole] = useState<CustomerRole | undefined>(
     user?.preferences?.customerRole
   );
@@ -32,15 +30,12 @@ const Onboarding = () => {
     user?.preferences?.learningExperience
   );
 
-  // Step management
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 5;
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  // Progress calculation
   const progress = Math.round((currentStep / totalSteps) * 100);
 
-  // Initialize dialog on first render
   useEffect(() => {
     setDialogOpen(true);
   }, []);
@@ -142,7 +137,6 @@ const Onboarding = () => {
             </p>
           </div>
           
-          {/* Main dialog for step-by-step onboarding */}
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogContent className="sm:max-w-md">
               <DialogHeader>
@@ -159,7 +153,6 @@ const Onboarding = () => {
               </DialogHeader>
               
               <div className="py-4 max-h-[60vh] overflow-y-auto">
-                {/* Step 1: Customer Role */}
                 {currentStep === 1 && (
                   <RadioGroup value={customerRole} onValueChange={(value) => setCustomerRole(value as CustomerRole)}>
                     <div className="grid gap-4 mt-2">
@@ -230,7 +223,6 @@ const Onboarding = () => {
                   </RadioGroup>
                 )}
                 
-                {/* Step 2: Learning Goal */}
                 {currentStep === 2 && (
                   <RadioGroup value={learningGoal} onValueChange={(value) => setLearningGoal(value as LearningGoal)}>
                     <div className="grid gap-4 mt-2">
@@ -259,7 +251,6 @@ const Onboarding = () => {
                   </RadioGroup>
                 )}
                 
-                {/* Step 3: Target Time */}
                 {currentStep === 3 && (
                   <RadioGroup value={targetTime?.toString()} onValueChange={(value) => setTargetTime(parseInt(value) as TargetTime)}>
                     <div className="grid gap-4 mt-2">
@@ -284,11 +275,17 @@ const Onboarding = () => {
                           <p className="text-sm text-muted-foreground">Deep dive learning sessions</p>
                         </div>
                       </div>
+                      <div className="flex items-start space-x-3 p-3 rounded-md transition-colors hover:bg-muted/50">
+                        <RadioGroupItem value="20" id="time-20" className="mt-1" />
+                        <div className="space-y-1.5">
+                          <Label htmlFor="time-20" className="text-base font-medium">20+ minutes</Label>
+                          <p className="text-sm text-muted-foreground">Extended in-depth learning</p>
+                        </div>
+                      </div>
                     </div>
                   </RadioGroup>
                 )}
                 
-                {/* Step 4: Weekly Frequency */}
                 {currentStep === 4 && (
                   <RadioGroup value={weeklyFrequency} onValueChange={(value) => setWeeklyFrequency(value as WeeklyFrequency)}>
                     <div className="grid gap-4 mt-2">
@@ -338,7 +335,6 @@ const Onboarding = () => {
                   </RadioGroup>
                 )}
                 
-                {/* Step 5: Learning Experience */}
                 {currentStep === 5 && (
                   <RadioGroup value={learningExperience} onValueChange={(value) => setLearningExperience(value as LearningExperience)}>
                     <div className="grid gap-4 mt-2">

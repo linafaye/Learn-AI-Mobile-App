@@ -6,7 +6,7 @@ export type CustomerRole = "developer" | "administrator" | "data_analyst" | "stu
 export type LearningGoal = "casual" | "professional" | "skill";
 export type WeeklyFrequency = "once" | "twice" | "thrice" | "weekday" | "weekend" | "daily";
 export type LearningExperience = "voice" | "interactive" | "both";
-export type TargetTime = 5 | 10 | 15;
+export type TargetTime = 5 | 10 | 15 | 20;
 
 export interface UserPreferences {
   customerRole?: CustomerRole;
