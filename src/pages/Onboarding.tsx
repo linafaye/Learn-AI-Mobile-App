@@ -48,10 +48,6 @@ const Onboarding = () => {
     }
   };
 
-  const handleSkip = () => {
-    navigate("/learn");
-  };
-
   const nextStep = () => {
     setCurrentStep((prev) => {
       const nextStep = prev + 1;
@@ -115,7 +111,6 @@ const Onboarding = () => {
               setLearningExperience={setLearningExperience}
               nextStep={nextStep}
               previousStep={previousStep}
-              handleSkip={handleSkip}
               handleSubmit={handleSubmit}
             />
           </Dialog>

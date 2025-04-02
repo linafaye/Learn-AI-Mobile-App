@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Check, Loader2, SkipForward } from "lucide-react";
+import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
 import { getStepTitle, getStepDescription, canProceed } from "@/utils/onboardingUtils";
@@ -27,7 +27,6 @@ interface OnboardingDialogContentProps {
   setLearningExperience: (value: LearningExperience) => void;
   nextStep: () => void;
   previousStep: () => void;
-  handleSkip: () => void;
   handleSubmit: () => void;
 }
 
@@ -47,7 +46,6 @@ const OnboardingDialogContent = ({
   setLearningExperience,
   nextStep,
   previousStep,
-  handleSkip,
   handleSubmit
 }: OnboardingDialogContentProps) => {
   const progress = Math.round((currentStep / totalSteps) * 100);
@@ -102,10 +100,7 @@ const OnboardingDialogContent = ({
             Back
           </Button>
         ) : (
-          <Button variant="ghost" onClick={handleSkip} className="text-muted-foreground">
-            Skip
-            <SkipForward className="ml-2 h-4 w-4" />
-          </Button>
+          <div></div> // Empty div to maintain the flex layout
         )}
         
         {currentStep < totalSteps ? (
