@@ -10,11 +10,20 @@ import {
   CardTitle 
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Award, Star, Trophy, Clock, ChartBar } from "lucide-react";
+import { Award, Star, Trophy, Clock, ChartBar, Bookmark, BookmarkCheck } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { LearningCourse, getAllCourses } from "@/utils/learningPathUtils";
+import CourseCard from "@/components/CourseCard";
+import { Button } from "@/components/ui/button";
 
 const ProgressPage: React.FC = () => {
-  const { user } = useAuth();
+  const { user, isInQueue, removeCourseFromQueue } = useAuth();
+  
+  // Get all courses and filter for those in the queue
+  const allCourses = getAllCourses();
+  const queuedCourses = user?.queuedCourses 
+    ? allCourses.filter(course => user.queuedCourses?.includes(course.id))
+    : [];
   
   // Mock data for the progress page
   const progressData = {
@@ -155,6 +164,28 @@ const ProgressPage: React.FC = () => {
             </CardContent>
           </Card>
         </div>
+        
+        {/* Queued Courses Section */}
+        {queuedCourses.length > 0 && (
+          <Card className="mb-8">
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <BookmarkCheck className="h-5 w-5 text-primary" />
+                <CardTitle>Your Learning Queue</CardTitle>
+              </div>
+              <CardDescription>
+                Courses you've saved to learn later
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {queuedCourses.map((course) => (
+                  <CourseCard key={course.id} course={course} />
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
         
         <Card className="mb-8">
           <CardHeader>

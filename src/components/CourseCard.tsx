@@ -12,20 +12,27 @@ import {
   PauseCircle,
   Info,
   Clock,
-  Volume2
+  Volume2,
+  Bookmark,
+  BookmarkCheck
 } from "lucide-react";
 import { LearningCourse } from "@/utils/learningPathUtils";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { useAuth } from "@/contexts/AuthContext";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface CourseCardProps {
   course: LearningCourse;
 }
 
 const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
+  const { addCourseToQueue, removeCourseFromQueue, isInQueue } = useAuth();
   const FormatIcon = course.format === "audio" ? Headphones : MousePointer;
   const [isPlaying, setIsPlaying] = useState(false);
   const [showAudioContent, setShowAudioContent] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  
+  const inQueue = isInQueue(course.id);
   
   const handleAudioToggle = () => {
     if (!audioRef.current || !course.audioUrl) return;
@@ -41,6 +48,14 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
   
   const handleAudioContentView = () => {
     setShowAudioContent(true);
+  };
+  
+  const handleQueueToggle = () => {
+    if (inQueue) {
+      removeCourseFromQueue(course.id);
+    } else {
+      addCourseToQueue(course.id);
+    }
   };
   
   useEffect(() => {
@@ -74,11 +89,33 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
               <span className="text-xs text-muted-foreground">{course.category}</span>
               <h3 className="font-semibold">{course.title}</h3>
             </div>
-            <div className="flex items-center gap-1 text-xs bg-muted rounded-full px-2 py-1">
-              <FormatIcon className="h-3 w-3" />
-              <span className="capitalize">
-                {course.level}
-              </span>
+            <div className="flex gap-2">
+              <div className="flex items-center gap-1 text-xs bg-muted rounded-full px-2 py-1">
+                <FormatIcon className="h-3 w-3" />
+                <span className="capitalize">
+                  {course.level}
+                </span>
+              </div>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-6 w-6"
+                      onClick={handleQueueToggle}
+                    >
+                      {inQueue ? 
+                        <BookmarkCheck className="h-4 w-4 text-primary" /> : 
+                        <Bookmark className="h-4 w-4" />
+                      }
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    {inQueue ? "Remove from queue" : "Add to queue"}
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
           </div>
           

@@ -1,6 +1,6 @@
-
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import { LearningCourse } from "@/utils/learningPathUtils";
 
 export type CustomerRole = "developer" | "administrator" | "data_analyst" | "student" | "solution_architect" | "it" | "data_engineer" | "security_engineer" | "ai_engineer";
 export type LearningGoal = "casual" | "professional" | "skill";
@@ -22,6 +22,7 @@ export type User = {
   name: string;
   preferences?: UserPreferences;
   provider?: "email" | "github" | "linkedin";
+  queuedCourses?: string[]; // Course IDs in the queue
 };
 
 interface AuthContextType {
@@ -34,6 +35,9 @@ interface AuthContextType {
   loginWithLinkedin: () => Promise<void>;
   logout: () => void;
   updateUserPreferences: (preferences: User["preferences"]) => void;
+  addCourseToQueue: (courseId: string) => void;
+  removeCourseFromQueue: (courseId: string) => void;
+  isInQueue: (courseId: string) => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -211,6 +215,48 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const addCourseToQueue = (courseId: string) => {
+    if (user) {
+      const queuedCourses = user.queuedCourses || [];
+      
+      if (queuedCourses.includes(courseId)) {
+        return;
+      }
+      
+      const updatedUser = {
+        ...user,
+        queuedCourses: [...queuedCourses, courseId]
+      };
+      
+      setUser(updatedUser);
+      toast({
+        title: "Course added to queue",
+        description: "You can view your queued courses in the Progress page",
+      });
+    }
+  };
+
+  const removeCourseFromQueue = (courseId: string) => {
+    if (user && user.queuedCourses) {
+      const updatedQueue = user.queuedCourses.filter(id => id !== courseId);
+      
+      const updatedUser = {
+        ...user,
+        queuedCourses: updatedQueue
+      };
+      
+      setUser(updatedUser);
+      toast({
+        title: "Course removed from queue",
+        description: "The course has been removed from your queue",
+      });
+    }
+  };
+
+  const isInQueue = (courseId: string): boolean => {
+    return user?.queuedCourses?.includes(courseId) || false;
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -223,6 +269,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         loginWithLinkedin,
         logout,
         updateUserPreferences,
+        addCourseToQueue,
+        removeCourseFromQueue,
+        isInQueue,
       }}
     >
       {children}
