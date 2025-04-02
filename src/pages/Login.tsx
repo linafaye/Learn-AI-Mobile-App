@@ -102,12 +102,12 @@ const Login = () => {
   };
   
   const SocialLoginButtons = () => (
-    <div className="space-y-4 mt-4">
-      <Separator>
+    <div className="space-y-4 mt-6">
+      <Separator className="my-4">
         <span className="px-2 text-muted-foreground text-xs">OR CONTINUE WITH</span>
       </Separator>
       
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-3 mt-4">
         <Button 
           variant="outline" 
           type="button" 
