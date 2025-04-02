@@ -1,11 +1,10 @@
-
 import { useState, useEffect } from "react";
 import { useAuth, CustomerRole, LearningGoal, TargetTime, WeeklyFrequency, LearningExperience } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { ArrowRight, Check, Loader2 } from "lucide-react";
+import { ArrowRight, Check, Loader2, SkipForward } from "lucide-react";
 import AppLayout from "@/components/AppLayout";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
@@ -45,14 +44,16 @@ const Onboarding = () => {
     }
   }, [user, navigate]);
 
-  // Handle dialog close
   const handleDialogChange = (open: boolean) => {
     setDialogOpen(open);
     
-    // If user closes the dialog, navigate to learn page
     if (!open) {
       navigate("/learn");
     }
+  };
+
+  const handleSkip = () => {
+    navigate("/learn");
   };
 
   const hasCompletedOnboarding = (user: any) => {
@@ -383,7 +384,10 @@ const Onboarding = () => {
                     Back
                   </Button>
                 ) : (
-                  <div></div>
+                  <Button variant="ghost" onClick={handleSkip} className="text-muted-foreground">
+                    Skip
+                    <SkipForward className="ml-2 h-4 w-4" />
+                  </Button>
                 )}
                 
                 {currentStep < totalSteps ? (
