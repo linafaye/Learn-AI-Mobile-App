@@ -1,7 +1,7 @@
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { PlayCircle, BookOpen, Headphones, MousePointer, Video, Youtube } from "lucide-react";
+import { PlayCircle, BookOpen, Headphones, MousePointer, Video } from "lucide-react";
 import { LearningCourse } from "@/utils/learningPathUtils";
 import CourseMetadata from "../CourseMetadata";
 import CourseProgress from "../CourseProgress";
