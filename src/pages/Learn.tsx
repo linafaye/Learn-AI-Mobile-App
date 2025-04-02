@@ -1,6 +1,5 @@
 
 import AppLayout from "@/components/AppLayout";
-import { TabsContent } from "@/components/ui/tabs";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { 
@@ -12,6 +11,10 @@ import {
 import { LearningPathCard } from "@/components/LearningPathCard";
 import CourseFilters from "@/components/CourseFilters";
 import CourseGrid from "@/components/CourseGrid";
+import { Input } from "@/components/ui/input";
+import { SearchIcon, TrendingUp } from "lucide-react";
+import PopularCategories from "@/components/PopularCategories";
+import TrendingCourses from "@/components/TrendingCourses";
 
 const Learn = () => {
   const { user } = useAuth();
@@ -19,6 +22,8 @@ const Learn = () => {
   const [allCourses, setAllCourses] = useState<LearningCourse[]>([]);
   const [filteredCourses, setFilteredCourses] = useState<LearningCourse[]>([]);
   const [formatFilter, setFormatFilter] = useState<ContentFormat | "all">("all");
+  const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [showFullGrid, setShowFullGrid] = useState(false);
   
   const recommendedPath = getRecommendedPath(user);
   
@@ -51,6 +56,9 @@ const Learn = () => {
   };
   
   const filterByCategory = (category: string) => {
+    setActiveCategory(category);
+    setShowFullGrid(true);
+    
     if (category === "all") {
       if (formatFilter !== "all") {
         setFilteredCourses(allCourses.filter(course => course.format === formatFilter));
@@ -74,9 +82,23 @@ const Learn = () => {
     setFormatFilter(format);
     
     if (format === "all") {
-      setFilteredCourses(allCourses);
+      if (activeCategory !== "all") {
+        setFilteredCourses(allCourses.filter(
+          course => course.category.toLowerCase() === activeCategory.toLowerCase()
+        ));
+      } else {
+        setFilteredCourses(allCourses);
+      }
     } else {
-      setFilteredCourses(allCourses.filter(course => course.format === format));
+      let filtered = allCourses.filter(course => course.format === format);
+      
+      if (activeCategory !== "all") {
+        filtered = filtered.filter(
+          course => course.category.toLowerCase() === activeCategory.toLowerCase()
+        );
+      }
+      
+      setFilteredCourses(filtered);
     }
   };
   
@@ -85,15 +107,39 @@ const Learn = () => {
       <div className="p-4 md:p-8">
         <header className="mb-8">
           <h1 className="text-2xl md:text-3xl font-bold mb-2">
-            Learn AI with Microsoft Content
+            Explore
           </h1>
           <p className="text-muted-foreground">
-            Explore our collection of AI learning materials from Microsoft Learn
+            Discover AI learning materials and courses
           </p>
         </header>
         
-        {recommendedPath && (
-          <div className="mb-8">
+        <form onSubmit={handleSearch} className="relative mb-8">
+          <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search courses and topics..."
+            className="pl-10"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </form>
+        
+        {!showFullGrid && (
+          <>
+            <PopularCategories onSelectCategory={filterByCategory} />
+            
+            <div className="mt-10">
+              <div className="flex items-center gap-2 mb-4">
+                <TrendingUp className="h-5 w-5 text-primary" />
+                <h2 className="text-xl font-semibold">Trending Courses</h2>
+              </div>
+              <TrendingCourses courses={allCourses.slice(0, 3)} />
+            </div>
+          </>
+        )}
+        
+        {recommendedPath && !showFullGrid && (
+          <div className="my-8">
             <h2 className="text-xl font-semibold mb-4">Your Recommended Learning Path</h2>
             <div className="max-w-2xl">
               <LearningPathCard path={recommendedPath} />
@@ -101,34 +147,21 @@ const Learn = () => {
           </div>
         )}
         
-        <CourseFilters 
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          formatFilter={formatFilter}
-          filterByFormat={filterByFormat}
-          filterByCategory={filterByCategory}
-          handleSearch={handleSearch}
-        />
-        
-        <TabsContent value="all" className="mt-6">
-          <CourseGrid courses={filteredCourses} />
-        </TabsContent>
-        
-        <TabsContent value="fundamentals" className="mt-6">
-          <CourseGrid courses={filteredCourses} />
-        </TabsContent>
-        
-        <TabsContent value="machine-learning" className="mt-6">
-          <CourseGrid courses={filteredCourses} />
-        </TabsContent>
-        
-        <TabsContent value="deep-learning" className="mt-6">
-          <CourseGrid courses={filteredCourses} />
-        </TabsContent>
-        
-        <TabsContent value="other" className="mt-6">
-          <CourseGrid courses={filteredCourses} />
-        </TabsContent>
+        {showFullGrid && (
+          <>
+            <CourseFilters 
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              formatFilter={formatFilter}
+              filterByFormat={filterByFormat}
+              filterByCategory={filterByCategory}
+              handleSearch={handleSearch}
+              activeCategory={activeCategory}
+            />
+            
+            <CourseGrid courses={filteredCourses} />
+          </>
+        )}
       </div>
     </AppLayout>
   );

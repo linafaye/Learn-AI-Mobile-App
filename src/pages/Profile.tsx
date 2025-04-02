@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import AppLayout from "@/components/AppLayout";
@@ -26,6 +25,12 @@ import {
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
+const learningExperienceOptions = [
+  { value: "voice", label: "Audio content" },
+  { value: "interactive", label: "Interactive content" },
+  { value: "both", label: "Both formats" },
+];
+
 const Profile = () => {
   const { user, updateUserPreferences } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
@@ -37,7 +42,7 @@ const Profile = () => {
   const [targetTime, setTargetTime] = useState<5 | 10 | 15 | undefined>(
     user?.preferences?.targetTime
   );
-  const [learningExperience, setLearningExperience] = useState<"voice" | "interactive" | undefined>(
+  const [learningExperience, setLearningExperience] = useState<"voice" | "interactive" | "both" | undefined>(
     user?.preferences?.learningExperience
   );
   
@@ -85,6 +90,8 @@ const Profile = () => {
         return "Voice-only";
       case "interactive":
         return "Interactive";
+      case "both":
+        return "Both formats";
       default:
         return "Not set";
     }
@@ -217,6 +224,13 @@ const Profile = () => {
                       <div className="flex items-center gap-1">
                         <Label htmlFor="exp-interactive">Interactive</Label>
                         <MousePointer className="h-3.5 w-3.5 text-muted-foreground" />
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="both" id="exp-both" />
+                      <div className="flex items-center gap-1">
+                        <Label htmlFor="exp-both">Both formats</Label>
+                        <Volume2 className="h-3.5 w-3.5 text-muted-foreground" />
                       </div>
                     </div>
                   </div>

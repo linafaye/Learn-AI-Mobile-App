@@ -12,6 +12,7 @@ interface CourseFiltersProps {
   filterByFormat: (format: ContentFormat | "all") => void;
   filterByCategory: (category: string) => void;
   handleSearch: (e: React.FormEvent) => void;
+  activeCategory?: string;
 }
 
 const CourseFilters: React.FC<CourseFiltersProps> = ({
@@ -20,7 +21,8 @@ const CourseFilters: React.FC<CourseFiltersProps> = ({
   formatFilter,
   filterByFormat,
   filterByCategory,
-  handleSearch
+  handleSearch,
+  activeCategory = "all"
 }) => {
   return (
     <>
@@ -62,13 +64,13 @@ const CourseFilters: React.FC<CourseFiltersProps> = ({
         </div>
       </div>
       
-      <Tabs defaultValue="all" className="mb-8">
+      <Tabs defaultValue={activeCategory} className="mb-8">
         <TabsList>
           <TabsTrigger value="all" onClick={() => filterByCategory("all")}>All</TabsTrigger>
           <TabsTrigger value="fundamentals" onClick={() => filterByCategory("fundamentals")}>Fundamentals</TabsTrigger>
-          <TabsTrigger value="machine-learning" onClick={() => filterByCategory("machine learning")}>Machine Learning</TabsTrigger>
-          <TabsTrigger value="deep-learning" onClick={() => filterByCategory("deep learning")}>Deep Learning</TabsTrigger>
-          <TabsTrigger value="other" onClick={() => filterByCategory("ethics")}>Ethics</TabsTrigger>
+          <TabsTrigger value="machine learning" onClick={() => filterByCategory("machine learning")}>Machine Learning</TabsTrigger>
+          <TabsTrigger value="deep learning" onClick={() => filterByCategory("deep learning")}>Deep Learning</TabsTrigger>
+          <TabsTrigger value="ethics" onClick={() => filterByCategory("ethics")}>Ethics</TabsTrigger>
         </TabsList>
       </Tabs>
     </>
