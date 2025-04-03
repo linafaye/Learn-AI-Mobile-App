@@ -49,13 +49,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { toast } = useToast();
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("aiLearnUser");
+    const storedUser = localStorage.getItem("pocketLearnUser");
     if (storedUser) {
       try {
         setUser(JSON.parse(storedUser));
       } catch (e) {
         console.error("Failed to parse stored user", e);
-        localStorage.removeItem("aiLearnUser");
+        localStorage.removeItem("pocketLearnUser");
       }
     }
     setIsLoading(false);
@@ -63,7 +63,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     if (user) {
-      localStorage.setItem("aiLearnUser", JSON.stringify(user));
+      localStorage.setItem("pocketLearnUser", JSON.stringify(user));
     }
   }, [user]);
 
@@ -120,7 +120,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(mockUser);
       toast({
         title: "Registration successful",
-        description: `Welcome to AI Learn, ${name}!`,
+        description: `Welcome to Pocket Learn, ${name}!`,
       });
     } catch (error) {
       console.error("Registration failed:", error);

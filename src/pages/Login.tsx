@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
@@ -158,7 +159,7 @@ const Login = () => {
               <path d="M14 5h8" />
             </svg>
           </div>
-          <h1 className="text-3xl font-bold mb-1">AI Learn</h1>
+          <h1 className="text-3xl font-bold mb-1">Pocket Learn</h1>
           <p className="text-muted-foreground">Master AI concepts with Microsoft Learn</p>
         </div>
         
